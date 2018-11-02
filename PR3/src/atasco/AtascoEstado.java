@@ -7,10 +7,28 @@ import aima.core.util.datastructure.Pair;
 
 public class AtascoEstado {
 	
-	//movimiento en horizontal
-	public static Action H = new DynamicAction("H");
-	//movimiento en vertical
-    public static Action V = new DynamicAction("V");
+	// Suponemos un numero constate de vehiculos: 8
+	// V0A = Movimiento A del vehiculo 0:
+ 	// Si está en horizontal  ===> A = Izq | B = Drch
+	// Si está en vertical ===> A = Arriba | B = Abajo
+	
+	public static Action V0A = new DynamicAction("V0A");
+    public static Action V0B = new DynamicAction("V0B");
+    public static Action V1A = new DynamicAction("V1A");
+    public static Action V1B = new DynamicAction("V1B");
+    public static Action V2A = new DynamicAction("V2A");
+    public static Action V2B = new DynamicAction("V2B");
+    public static Action V3A = new DynamicAction("V3A");
+    public static Action V3B = new DynamicAction("V3B");
+    public static Action V4A = new DynamicAction("V4A");
+    public static Action V4B = new DynamicAction("V4B");
+    public static Action V5A = new DynamicAction("V5A");
+    public static Action V5B = new DynamicAction("V5B");
+    public static Action V6A = new DynamicAction("V6A");
+    public static Action V6B = new DynamicAction("V6B");
+    public static Action V7A = new DynamicAction("V7A");
+    public static Action V7B = new DynamicAction("V7B");
+    
 	
     //Representamos el estado con un vector de Vehiculos
     /*
@@ -24,7 +42,6 @@ public class AtascoEstado {
     private boolean ocupadas [][];
     private int numFilas;
     private int numColumnas;
-    private int numCoches;
     private Pair <Integer,Integer> puerta;
     private Vehiculo vehiculos[]; 
     
@@ -39,8 +56,6 @@ public class AtascoEstado {
     	this.vehiculos = new Vehiculo[8];
     	this.numFilas = 6;
     	this.numColumnas = 6;
-    	this.numCoches = 8;
-    	
     	//Creacion de los vehiculos del enunciado:
     	
     	vehiculos[0] = new Vehiculo(2, 2, "H", 0); //Coche Rojo
@@ -70,7 +85,7 @@ public class AtascoEstado {
     	}
     	
     	
-    	for(int i = 0; i < numCoches; i++) {
+    	for(int i = 0; i < 8; i++) {
     		int fila = vehiculos[i].getFila();
     		int columna = vehiculos[i].getColumna();
     		
@@ -90,4 +105,28 @@ public class AtascoEstado {
     	}
     }
     
+    /*
+     * Mover el vehiculo 0 del array con el movimiento A
+     * Las comprobaciones de si se puede hacer este moviemiento se hacen en otra funcion
+     */
+    public void move0A() {
+    	if (vehiculos[0].getOrientacion().equals("V")) { //Mover arriba
+    		if (vehiculos[0].getTipo() == 2) { //Camion
+    			ocupadas[vehiculos[0].getFila() + 2 ][vehiculos[0].getColumna()] =  false;	
+    		} else { //Coche
+    			ocupadas[vehiculos[0].getFila() + 1 ][vehiculos[0].getColumna()] =  false;
+    		}
+    		ocupadas[vehiculos[0].getFila() - 1 ][vehiculos[0].getColumna()] =  true;
+			vehiculos[0].setFila(vehiculos[0].getFila() - 1);
+			
+    	} else { //Mover a la izquierda
+    		if (vehiculos[0].getTipo() == 2) { //Camion
+    			ocupadas[vehiculos[0].getFila()][vehiculos[0].getColumna() + 2] =  false;
+    		} else { //Coche
+    			ocupadas[vehiculos[0].getFila()][vehiculos[0].getColumna() + 1] =  false;
+    		}
+    		ocupadas[vehiculos[0].getFila()][vehiculos[0].getColumna() - 1] =  true;
+			vehiculos[0].setColumna(vehiculos[0].getColumna() - 1);
+    	}
+    }
 }
