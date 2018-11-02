@@ -1,10 +1,13 @@
 package atasco;
 
 public class Vehiculo {
+	
+	
 	private int fila;
 	private int columna;
+	private String orientacion;
 	private int tipo;
-	private String orientacion; 
+	 
 	
 	// tipo == 0 -> Coche rojo
 	// tipo == 1 -> Coche

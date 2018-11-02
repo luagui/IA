@@ -34,17 +34,18 @@ public class AtascoEstado {
     /*
      * La orientacion será H o V e indicará si el coche está en horizontal o vertical
      * 
-     * Además usamos una matriz 6x6 de booleanos donde iremos guardando casillas
-     * ocupadas con 1, o libres con 0*/
+     * Además usamos una matriz 6x6 de booleanos "ocupadas" donde iremos guardando casillas
+     * ocupadas con true, o libres con false*/
     
     //***************************************************************************
 	
     private boolean ocupadas [][];
     private int numFilas;
     private int numColumnas;
-    private Pair <Integer,Integer> puerta;
+    private Par <Integer,Integer> puerta;
     private Vehiculo vehiculos[]; 
     
+
     /*
      * Constructora por defecto. Problema del enunciado.
      */
@@ -52,10 +53,11 @@ public class AtascoEstado {
     {
     	//Los Arrays por defecto se inicializan a false (según stack overflow)
     	this.ocupadas  = new boolean [6][6];
-    	this.puerta = new Pair<Integer, Integer>(2,5);
+    	this.puerta = new Par<Integer, Integer>(2,5);
     	this.vehiculos = new Vehiculo[8];
     	this.numFilas = 6;
     	this.numColumnas = 6;
+    	
     	//Creacion de los vehiculos del enunciado:
     	
     	vehiculos[0] = new Vehiculo(2, 2, "H", 0); //Coche Rojo
@@ -71,6 +73,18 @@ public class AtascoEstado {
     	
     }
 	
+    /*
+     * Devuelve la posición de la puerta*/
+    public Par<Integer,Integer> getPuerta() {
+    	return this.puerta;
+    }
+    
+    /*
+     * Devuelve la posición del coche rojo*/
+    public Vehiculo getCocheRojo() {
+    	return this.vehiculos[0];
+    }
+    
     
     /*
      * Actualiza la matriz de booleanos, para saber qué casillas están ocupadas
@@ -83,7 +97,6 @@ public class AtascoEstado {
     			ocupadas[i][j] = false;
     		}
     	}
-    	
     	
     	for(int i = 0; i < 8; i++) {
     		int fila = vehiculos[i].getFila();
@@ -104,29 +117,230 @@ public class AtascoEstado {
 			}
     	}
     }
+    /*
+     *Función que nos devuelve true si el movimiento que queremos hacer es válido y false en 
+     *otro caso */
+    
+    public boolean movimientoValido(Action movimiento){
+    	
+        boolean valido=false;
+        
+        if(movimiento.equals(V0A)){ 
+        	//comprobamos movimiento A con el vehículo 0
+        	valido = movimientoAValido(0);
+        }
+        else if(movimiento.equals(V1A)) {
+        	//comprobamos movimiento A con el vehículo 1
+        	valido = movimientoAValido(1);
+        }
+        else if(movimiento.equals(V2A)) {
+        	//comprobamos movimiento A con el vehículo 2
+        	valido = movimientoAValido(2);
+        }
+        else if(movimiento.equals(V3A)) {
+        	//comprobamos movimiento A con el vehículo 3
+        	valido = movimientoAValido(3);
+        }
+        else if(movimiento.equals(V4A)) {
+        	//comprobamos movimiento A con el vehículo 4
+        	valido = movimientoAValido(4);
+        }
+        else if(movimiento.equals(V5A)) {
+        	//comprobamos movimiento A con el vehículo 5
+        	valido = movimientoAValido(5);
+        }
+        else if(movimiento.equals(V6A)) {
+        	//comprobamos movimiento A con el vehículo 6
+        	valido = movimientoAValido(6);
+        }
+        else if(movimiento.equals(V7A)) {
+        	//comprobamos movimiento A con el vehículo 7
+        	valido = movimientoAValido(7);
+        }
+        
+        else if(movimiento.equals(V0B)) {
+        	//comprobamos movimiento B con el vehículo 0
+        	valido = movimientoBValido(0);
+        }
+        
+        else if(movimiento.equals(V1B)) {
+        	//comprobamos movimiento B con el vehículo 1
+        	valido = movimientoBValido(1);
+        }
+        
+        else if(movimiento.equals(V2B)) {
+        	//comprobamos movimiento B con el vehículo 2
+        	valido = movimientoBValido(2);
+        }
+        else if(movimiento.equals(V3B)) {
+        	//comprobamos movimiento B con el vehículo 3
+        	valido = movimientoBValido(3);
+        }
+        else if(movimiento.equals(V4B)) {
+        	//comprobamos movimiento B con el vehículo 4
+        	valido = movimientoBValido(4);
+        }
+        else if(movimiento.equals(V5B)) {
+        	//comprobamos movimiento B con el vehículo 5
+        	valido = movimientoBValido(5);
+        }
+        else if(movimiento.equals(V6B)) {
+        	//comprobamos movimiento B con el vehículo 6
+        	valido = movimientoBValido(6);
+        }
+        else if(movimiento.equals(V7B)) {
+        	//comprobamos movimiento B con el vehículo 7
+        	valido = movimientoBValido(7);
+        }
+        return valido;
+    }
+    /*
+     *Dado un coche, nos dice si un movimiento A sobre él sería válido*/
+    
+    public boolean movimientoAValido(int numV) {
+    	
+    	boolean valido = false;
+    	if (vehiculos[numV].getOrientacion().equals("V")) {//está en vertical, movemos hacia arriba
+    		//hay espacio en la fila de arriba y está libre
+    		if(vehiculos[numV].getFila() > 0 && 
+    				!ocupadas[vehiculos[numV].getFila()-1][vehiculos[numV].getColumna()]) {
+    			valido = true;
+    		}
+    	}
+    	else {//está en horizontal, movemos hacia la izquierda
+    		//hay sitio a la izquierda y está libre
+    		if(vehiculos[numV].getColumna() > 0 && 
+    				!ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()-1]) {
+    			valido = true;
+    		}
+    	}
+    	return valido;
+    }
     
     /*
-     * Mover el vehiculo 0 del array con el movimiento A
+     *Dado un coche, nos dice si un movimiento B sobre él sería válido*/
+    
+    public boolean movimientoBValido(int numV) {
+    	
+    	boolean valido = false;
+    	
+    	if (vehiculos[numV].getOrientacion().equals("V")) { //Mover abajo
+    		if (vehiculos[numV].getTipo() == 2) { //Camion
+    			//hay hueco hacia abajo y está libre
+    			if ((vehiculos[numV].getFila() + 2) < (numFilas - 1)&& 
+    					!ocupadas[vehiculos[numV].getFila()+3][vehiculos[numV].getColumna()]) {
+    				valido = true;
+    			}
+    		}
+    		else { //coche
+    			//hay hueco hacia abajo y está libre
+    			if ((vehiculos[numV].getFila() + 1) < (numFilas - 1)&& 
+    					!ocupadas[vehiculos[numV].getFila()+2][vehiculos[numV].getColumna()]) {
+    				valido = true;
+    			}
+    		}
+    	}
+    	else {//Mover derecha
+    		if (vehiculos[numV].getTipo() == 2) { //Camion
+    			//hay hueco hacia la derecha y está libre
+    			if ((vehiculos[numV].getColumna() + 2) < (numColumnas - 1)&& 
+    					!ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()+3]) {
+    				valido = true;
+    			}
+    		}
+    		else { //coche
+    			//hay hueco hacia la derecha y está libre
+    			if ((vehiculos[numV].getColumna() + 1) < (numColumnas - 1)&& 
+    					!ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()+2]) {
+    				valido = true;
+    			}
+    		}
+    	}
+    	
+    	return valido;
+    }
+    
+    
+    
+    /*
+     * Mover el vehiculo numV del array con el movimiento A
      * Las comprobaciones de si se puede hacer este moviemiento se hacen en otra funcion
      */
-    public void move0A() {
-    	if (vehiculos[0].getOrientacion().equals("V")) { //Mover arriba
-    		if (vehiculos[0].getTipo() == 2) { //Camion
-    			ocupadas[vehiculos[0].getFila() + 2 ][vehiculos[0].getColumna()] =  false;	
+    public void moveA(int numV) {
+    	if (vehiculos[numV].getOrientacion().equals("V")) { //Mover arriba
+    		if (vehiculos[numV].getTipo() == 2) { //Camion
+    			ocupadas[vehiculos[numV].getFila() + 2 ][vehiculos[numV].getColumna()] =  false;	
     		} else { //Coche
-    			ocupadas[vehiculos[0].getFila() + 1 ][vehiculos[0].getColumna()] =  false;
+    			ocupadas[vehiculos[numV].getFila() + 1 ][vehiculos[numV].getColumna()] =  false;
     		}
-    		ocupadas[vehiculos[0].getFila() - 1 ][vehiculos[0].getColumna()] =  true;
-			vehiculos[0].setFila(vehiculos[0].getFila() - 1);
+    		ocupadas[vehiculos[numV].getFila() - 1 ][vehiculos[numV].getColumna()] =  true;
+			vehiculos[numV].setFila(vehiculos[numV].getFila() - 1);
 			
     	} else { //Mover a la izquierda
-    		if (vehiculos[0].getTipo() == 2) { //Camion
-    			ocupadas[vehiculos[0].getFila()][vehiculos[0].getColumna() + 2] =  false;
+    		if (vehiculos[numV].getTipo() == 2) { //Camion
+    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() + 2] =  false;
     		} else { //Coche
-    			ocupadas[vehiculos[0].getFila()][vehiculos[0].getColumna() + 1] =  false;
+    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() + 1] =  false;
     		}
-    		ocupadas[vehiculos[0].getFila()][vehiculos[0].getColumna() - 1] =  true;
-			vehiculos[0].setColumna(vehiculos[0].getColumna() - 1);
+    		ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() - 1] =  true;
+			vehiculos[numV].setColumna(vehiculos[numV].getColumna() - 1);
     	}
     }
+    
+    /*
+     * Mover el vehiculo numV del array con el movimiento B
+     * Las comprobaciones de si se puede hacer este moviemiento se hacen en otra funcion
+     */
+    public void moveB(int numV) {
+    	if (vehiculos[numV].getOrientacion().equals("V")) { //Mover abajo
+    		if (vehiculos[numV].getTipo() == 2) { //Camion
+    			
+    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()] =  false;
+    			ocupadas[vehiculos[numV].getFila() + 3 ][vehiculos[numV].getColumna()] =  true;
+    			
+    		} else { //Coche
+    			
+    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()] =  false;
+    			ocupadas[vehiculos[numV].getFila() + 2 ][vehiculos[numV].getColumna()] =  true;
+    		}
+    		
+			vehiculos[numV].setFila(vehiculos[numV].getFila() + 1);
+			
+    	} else { //Mover a la derecha
+    		if (vehiculos[numV].getTipo() == 2) { //Camion
+    			
+    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()] =  false;
+    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() + 3] =  true;
+    			
+    		} else { //Coche
+    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()] =  false;
+    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() + 2] =  true;
+    		}
+    		
+			vehiculos[numV].setColumna(vehiculos[numV].getColumna() + 1);
+    	}
+    }
+    
+    @Override
+    public boolean equals(Object o)
+    {
+    	boolean eq = true;
+    	
+        if(this == o) return true;
+
+        if((o == null || (this.getClass() != o.getClass()))) return false;
+
+        AtascoEstado otroEstado = (AtascoEstado) o;
+        
+        for(int i=0; i<7 && eq; i++) {
+        	//HABRÍA QUE HACER EQUALS EN VEHICULOS
+        	if (!vehiculos[i].equals(otroEstado.vehiculos[i])) {
+        		eq = false;
+        	}
+        }
+        
+        return eq;
+
+    }
+    
 }
