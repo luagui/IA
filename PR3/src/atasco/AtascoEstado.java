@@ -321,7 +321,7 @@ public class AtascoEstado {
     	}
     }
     
-    @Override
+/*    @Override
     public boolean equals(Object o)
     {
     	boolean eq = true;
@@ -341,6 +341,6 @@ public class AtascoEstado {
         
         return eq;
 
-    }
+    }*/
     
 }
