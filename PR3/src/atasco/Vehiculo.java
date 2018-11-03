@@ -43,4 +43,24 @@ public class Vehiculo {
 	public void setColumna(int nuevaColumna){
 		this.columna = nuevaColumna;
 	}
+	
+	 public boolean equals(Object o) {
+
+	    	boolean eq = true;
+	    	
+	        if(this == o) return true;
+
+	        if((o == null || (this.getClass() != o.getClass()))) return false;
+
+	        Vehiculo otroVehiculo = (Vehiculo) o;
+	        
+	        eq = (this.columna == otroVehiculo.getColumna()) && (this.fila == otroVehiculo.getFila())
+	        		&& (this.orientacion == otroVehiculo.getOrientacion()) && (this.tipo == otroVehiculo.getTipo());
+	        
+	        return eq;
+	   }
+	 
+	 public int hashCode() { //Utilizo primos que se supone que da menos colisiones en los hash
+		 return 31*this.fila + 13*this.columna + 5*this.tipo + (this.orientacion.equals("V") ? 1 : 0);  
+	 }
 }

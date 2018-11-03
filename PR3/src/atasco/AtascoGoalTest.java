@@ -1,19 +1,20 @@
 package atasco;
 
+import aima.core.search.framework.problem.GoalTest;
+
 //import aima.core.search.framework.GoalTest;
 
-public class AtascoGoalTest {
+public class AtascoGoalTest implements GoalTest {
 
-	
-	    //private AtascoEstado goal = new AtascoEstado();
-
-	 //   @Override
 	    public boolean isGoalState(Object o) {
 	        AtascoEstado estado = (AtascoEstado) o;
 	        if (estado.getCocheRojo().getOrientacion().equals("H")) {
 	        	//el coche rojo va a estar en la misma fila que la puerta
 	        	//comprobamos si está en la misma columna
-	        	if(estado.getPuerta().daSegundo()==estado.getCocheRojo().getColumna()) {
+	        	int columnaPuerta = estado.getPuerta().daSegundo();
+	        	
+	        	if(columnaPuerta == (estado.getCocheRojo().getColumna() + 1) || //Puerta Izquierda 
+	        			columnaPuerta == (estado.getCocheRojo().getColumna())) { //Puerta Derecha
 	        		return true;
 	        	}
 	        	else
@@ -22,7 +23,9 @@ public class AtascoGoalTest {
 	        else {
 	        	//el coche rojo va a estar en la misma columna que la puerta
 	        	//comprobamos si está en la misma fila
-	        	if(estado.getPuerta().daPrimero()==estado.getCocheRojo().getFila()) {
+	        	int filaPuerta = estado.getPuerta().daPrimero();
+	        	if(filaPuerta == (estado.getCocheRojo().getFila() + 1) || 
+	        			filaPuerta == (estado.getCocheRojo().getFila())) {
 	        		return true;
 	        	}
 	        	else 

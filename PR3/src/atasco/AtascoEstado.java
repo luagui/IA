@@ -73,6 +73,14 @@ public class AtascoEstado {
     	
     }
 	
+    public AtascoEstado (AtascoEstado copia) {
+    	this.numFilas = copia.getNumFilas();
+    	this.numColumnas = copia.getNumColumnas();
+    	this.puerta = new Par <Integer, Integer> (copia.getFilaPuerta(), copia.getColumnaPuerta());
+    	this.ocupadas = copia.copiarOcupadas();
+    	this.vehiculos = copia.copiarVehiculos();
+    	
+    }
     /*
      * Devuelve la posición de la puerta*/
     public Par<Integer,Integer> getPuerta() {
@@ -321,9 +329,7 @@ public class AtascoEstado {
     	}
     }
     
-/*    @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
     	boolean eq = true;
     	
         if(this == o) return true;
@@ -332,15 +338,44 @@ public class AtascoEstado {
 
         AtascoEstado otroEstado = (AtascoEstado) o;
         
-        for(int i=0; i<7 && eq; i++) {
-        	//HABRÍA QUE HACER EQUALS EN VEHICULOS
+        for(int i=0; i < 8 && eq; i++) {
+        
         	if (!vehiculos[i].equals(otroEstado.vehiculos[i])) {
         		eq = false;
         	}
-        }
-        
+        }        
         return eq;
-
-    }*/
+    }
     
+    public int hashCode() {
+    	int hash = 0;
+    	
+    	for (int i = 0; i < 8; i++) {
+    			hash += vehiculos[i].hashCode();
+    		}
+    	 return hash;	
+    }
+
+    public int getNumFilas() {
+    	return this.numFilas;
+    }
+    
+    public int getNumColumnas() {
+    	return this.numColumnas;
+    }
+    
+    public Vehiculo[] copiarVehiculos() {
+    	return this.vehiculos.clone();
+    }
+    public boolean [][] copiarOcupadas() {
+    	return this.ocupadas.clone();
+    }
+    
+    public int getFilaPuerta() {
+    	return this.puerta.daPrimero();
+    }
+    
+    public int getColumnaPuerta() {
+    	return this.puerta.daSegundo();
+    }
 }

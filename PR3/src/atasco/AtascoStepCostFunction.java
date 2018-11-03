@@ -1,13 +1,11 @@
 package atasco;
 
 import aima.core.agent.Action;
-import aima.core.search.framework.StepCostFunction;
+import aima.core.search.framework.problem.StepCostFunction;
 
-public class AtascoStepCostFunction {
+public class AtascoStepCostFunction implements StepCostFunction{
 
-	@Override
     public double c(Object stateFrom, Action action, Object stateTo) {
         return 1;
     }
-	
 }
