@@ -7,15 +7,13 @@ import aima.core.agent.Action;
 import aima.core.search.framework.problem.ActionsFunction;
 
 
-
-
 public class AtascoActionsFunction implements ActionsFunction {
 
 	public Set<Action> actions(Object state) {
 		AtascoEstado estado = (AtascoEstado) state;
 		// lista de acciones posibles
 		Set<Action> actions = new LinkedHashSet<Action>();
-		// si se cumplen las precondiciones y no se va a un estado de peligro entonces
+		// si se cumplen las precondiciones y no se va a un estado imposible entonces
 		// se añade la acción a la lista de acciones posibles
 		if (estado.movimientoValido(AtascoEstado.V0A)) {
 			actions.add(AtascoEstado.V0A);
@@ -31,6 +29,9 @@ public class AtascoActionsFunction implements ActionsFunction {
 		}
 		if (estado.movimientoValido(AtascoEstado.V4A)) {
 			actions.add(AtascoEstado.V4A);
+		}
+		if (estado.movimientoValido(AtascoEstado.V5A)) {
+			actions.add(AtascoEstado.V5A);
 		}
 		if (estado.movimientoValido(AtascoEstado.V6A)) {
 			actions.add(AtascoEstado.V6A);
@@ -53,6 +54,9 @@ public class AtascoActionsFunction implements ActionsFunction {
 		}
 		if (estado.movimientoValido(AtascoEstado.V4B)) {
 			actions.add(AtascoEstado.V4B);
+		}
+		if (estado.movimientoValido(AtascoEstado.V5B)) {
+			actions.add(AtascoEstado.V5B);
 		}
 		if (estado.movimientoValido(AtascoEstado.V6B)) {
 			actions.add(AtascoEstado.V6B);

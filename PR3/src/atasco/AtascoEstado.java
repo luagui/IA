@@ -73,6 +73,8 @@ public class AtascoEstado {
     	
     }
 	
+    /*
+     * Constructor con paso de estado por parámetro*/
     public AtascoEstado (AtascoEstado copia) {
     	this.numFilas = copia.getNumFilas();
     	this.numColumnas = copia.getNumColumnas();
@@ -80,17 +82,6 @@ public class AtascoEstado {
     	this.ocupadas = copia.copiarOcupadas();
     	this.vehiculos = copia.copiarVehiculos();
     	
-    }
-    /*
-     * Devuelve la posición de la puerta*/
-    public Par<Integer,Integer> getPuerta() {
-    	return this.puerta;
-    }
-    
-    /*
-     * Devuelve la posición del coche rojo*/
-    public Vehiculo getCocheRojo() {
-    	return this.vehiculos[0];
     }
     
     
@@ -377,5 +368,19 @@ public class AtascoEstado {
     
     public int getColumnaPuerta() {
     	return this.puerta.daSegundo();
+    }
+    /*
+     * Devuelve la posición de la puerta*/
+    public Par<Integer,Integer> getPuerta() {
+    	return this.puerta;
+    }
+    
+    /*
+     * Devuelve la posición del coche rojo*/
+    public Vehiculo getCocheRojo() {
+    	return this.vehiculos[0];
+    }
+    public boolean [][] getOcupadas(){
+    	return this.ocupadas;
     }
 }
