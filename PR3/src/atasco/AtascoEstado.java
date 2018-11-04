@@ -70,6 +70,7 @@ public class AtascoEstado {
     	vehiculos[7] = new Vehiculo(4,4,"H", 1); //Coche Morado
 
     	actualizarOcupadas();
+    	auxToString();
     	
     }
 	
@@ -79,8 +80,10 @@ public class AtascoEstado {
     	this.numFilas = copia.getNumFilas();
     	this.numColumnas = copia.getNumColumnas();
     	this.puerta = new Par <Integer, Integer> (copia.getFilaPuerta(), copia.getColumnaPuerta());
-    	this.ocupadas = copia.copiarOcupadas();
-    	this.vehiculos = copia.copiarVehiculos();
+    	this.ocupadas = new int[6][6];
+    	copiarOcupadas(copia);
+    	this.vehiculos = new Vehiculo[8];
+    	copiarVehiculos(copia);
     	
     }
     
@@ -269,6 +272,8 @@ public class AtascoEstado {
     		ocupadas[vehiculos[numV].getFila() - 1 ][vehiculos[numV].getColumna()] =  numV;
 			vehiculos[numV].setFila(vehiculos[numV].getFila() - 1);
 			
+			
+			
     	} else { //Mover a la izquierda
     		if (vehiculos[numV].getTipo() == 2) { //Camion
     			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() + 2] =  -1;
@@ -277,7 +282,10 @@ public class AtascoEstado {
     		}
     		ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() - 1] =  numV;
 			vehiculos[numV].setColumna(vehiculos[numV].getColumna() - 1);
+			
     	}
+    	System.out.print("Movimiento A con coche " + numV + "\n");
+    	auxToString();
     }
     
     /*
@@ -312,6 +320,8 @@ public class AtascoEstado {
     		
 			vehiculos[numV].setColumna(vehiculos[numV].getColumna() + 1);
     	}
+    	System.out.print("Movimiento B con coche " + numV + "\n");
+    	auxToString();
     }
     
     public boolean equals(Object o) {
@@ -349,11 +359,19 @@ public class AtascoEstado {
     	return this.numColumnas;
     }
     
-    public Vehiculo[] copiarVehiculos() {
-    	return this.vehiculos.clone();
+    public void copiarVehiculos(AtascoEstado copiaEstado) {
+    	for (int i = 0; i < 8; i++){
+    		Vehiculo copia = copiaEstado.getVehiculo(i);
+    		this.vehiculos[i] = new Vehiculo(copia.getFila(), copia.getColumna(), copia.getOrientacion(),copia.getTipo());
+    	}
     }
-    public int [][] copiarOcupadas() {
-    	return this.ocupadas.clone();
+    public void copiarOcupadas(AtascoEstado copia) {
+    	int [][] ocupadasCopia = copia.getOcupadas();
+    	for (int i = 0; i < 6; i++) {
+    		for (int j = 0; j < 6; j++) {
+    			this.ocupadas[i][j] = ocupadasCopia[i][j];
+    		}
+    	}
     }
     
     public int getFilaPuerta() {
@@ -376,5 +394,22 @@ public class AtascoEstado {
     }
     public int [][] getOcupadas(){
     	return this.ocupadas;
+    }
+    
+    public Vehiculo getVehiculo(int n){
+    	return this.vehiculos[n];
+    }
+    
+    public void auxToString() {
+    	for (int i = 0; i < 6; i++) {
+    		for (int j = 0; j < 6; j++) {
+    			if (ocupadas[i][j] == -1) {
+    				System.out.print("* ");
+    			} else {
+    				System.out.print(ocupadas[i][j] + " ");
+    			}
+    		}
+    		System.out.print("\n");
+    	}
     }
 }

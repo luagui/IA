@@ -55,7 +55,7 @@ public class Vehiculo {
 	        Vehiculo otroVehiculo = (Vehiculo) o;
 	        
 	        eq = (this.columna == otroVehiculo.getColumna()) && (this.fila == otroVehiculo.getFila())
-	        		&& (this.orientacion == otroVehiculo.getOrientacion()) && (this.tipo == otroVehiculo.getTipo());
+	        		&& (this.orientacion.equals(otroVehiculo.getOrientacion())) && (this.tipo == otroVehiculo.getTipo());
 	        
 	        return eq;
 	   }

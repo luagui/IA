@@ -42,11 +42,15 @@ public class AtascoHeuristicFunction implements HeuristicFunction{
 	        		}
 	        	}
 	        	else {//Tenemos la puerta a la derecha
-	        		int numPasos = 5 - estado.getCocheRojo().getColumna()+1 ; //casillas desde el coche a la puerta
+	        		System.out.print("Tiene que entrar por aqui \n ");
+	        		int numPasos = 5 - (estado.getCocheRojo().getColumna() + 1) ; //casillas desde el coche a la puerta
+	        		System.out.print("Columna del coche rojo: " + estado.getCocheRojo().getColumna() + "\n");
+	        		System.out.print("Numero de casillas a la puerta: " + numPasos + "\n");
 	        		//el +1 es porque el coche acaba en estado.getCocheRojo().getColumna()+1
 	        		valorHeur = numPasos;
-	        		for(int i=estado.getCocheRojo().getColumna()+1; i <= 5; i++ ) {//Para cada una vemos si están ocupadas
+	        		for(int i=estado.getCocheRojo().getColumna() + 2; i <= 5; i++ ) {//Para cada una vemos si están ocupadas
 	        			if(estado.getOcupadas()[estado.getCocheRojo().getFila()][i] != -1) {//casilla ocupada
+	        				System.out.print("Casilla " + "(" +estado.getCocheRojo().getFila() +  "," + (i) + ")" + " ocupada \n");
 	        				valorHeur +=1;
 	        			}
 	        		}
@@ -66,7 +70,7 @@ public class AtascoHeuristicFunction implements HeuristicFunction{
 	        		int numPasos = 5 - estado.getCocheRojo().getFila()+1 ; //casillas desde el coche a la puerta
 	        		//el +1 es porque el coche acaba en estado.getCocheRojo().getFila()+1
 	        		valorHeur = numPasos;
-	        		for(int i=estado.getCocheRojo().getFila()+1; i <= 5; i++ ) {//Para cada una vemos si están ocupadas
+	        		for(int i=estado.getCocheRojo().getFila() + 2; i <= 5; i++ ) {//Para cada una vemos si están ocupadas
 	        			if(estado.getOcupadas()[i][estado.getCocheRojo().getColumna()] != -1) {//casilla ocupada
 	        				valorHeur +=1;
 	        			}
@@ -74,7 +78,7 @@ public class AtascoHeuristicFunction implements HeuristicFunction{
 	        	}
 	        	
 	        }
-	        
+	        System.out.print("Valar heuristico: " + valorHeur + "\n ");
 	        return valorHeur;
 	    }
 	

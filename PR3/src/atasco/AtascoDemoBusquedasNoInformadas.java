@@ -28,8 +28,8 @@ public class AtascoDemoBusquedasNoInformadas {
 	    private static void AtascoDemo()
 	    {
 	        breadthFirstDemo();
-	        depthLimitedFirstDemo();
-	        iterativeDeepeningDemo();
+	       //depthLimitedFirstDemo();
+	        //iterativeDeepeningDemo();
 
 	    }
 
@@ -39,7 +39,7 @@ public class AtascoDemoBusquedasNoInformadas {
 	        try
 	        {
 	            Problem problem
-	                    = new Problem(estadoInicial,AtascoFunctionFactory.getAtionsFunction(),
+	                    = new Problem(estadoInicial,AtascoFunctionFactory.getActionsFunction(),
 	                    AtascoFunctionFactory.getResultFunction(),new AtascoGoalTest(),
 	                    new AtascoStepCostFunction());
 	            //aquí
@@ -61,7 +61,7 @@ public class AtascoDemoBusquedasNoInformadas {
 	        try
 	        {
 	            Problem problem
-	                    = new Problem(estadoInicial,AtascoFunctionFactory.getAtionsFunction(),
+	                    = new Problem(estadoInicial,AtascoFunctionFactory.getActionsFunction(),
 	                    AtascoFunctionFactory.getResultFunction(),new AtascoGoalTest(),
 	                    new AtascoStepCostFunction());
 	            //Aquí
@@ -84,7 +84,7 @@ public class AtascoDemoBusquedasNoInformadas {
 	        try
 	        {
 	            Problem problem
-	                    = new Problem(estadoInicial,AtascoFunctionFactory.getAtionsFunction(),
+	                    = new Problem(estadoInicial,AtascoFunctionFactory.getActionsFunction(),
 	                    AtascoFunctionFactory.getResultFunction(),new AtascoGoalTest(),
 	                    new AtascoStepCostFunction());
 	            // aquí

@@ -14,6 +14,7 @@ public class AtascoGoalTest implements GoalTest {
 	        	
 	        	if(columnaPuerta == (estado.getCocheRojo().getColumna() + 1) || //Puerta Derecha 
 	        			columnaPuerta == (estado.getCocheRojo().getColumna())) { //PuertaIzquierda
+	        		System.out.print("EXITOOOOO!!!!!!!!!!! \n");
 	        		return true;
 	        	}
 	        	else
@@ -25,6 +26,7 @@ public class AtascoGoalTest implements GoalTest {
 	        	int filaPuerta = estado.getFilaPuerta();
 	        	if(filaPuerta == (estado.getCocheRojo().getFila() + 1) || 
 	        			filaPuerta == (estado.getCocheRojo().getFila())) {
+	        		System.out.print("EXITOOOOO!!!!!!!!!!! \n");
 	        		return true;
 	        	}
 	        	else 

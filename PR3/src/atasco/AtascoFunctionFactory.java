@@ -9,7 +9,7 @@ public class AtascoFunctionFactory {
     private static ActionsFunction _actionsFunction = null;
     private  static ResultFunction _resultFunction = null;
 
-    public static ActionsFunction getAtionsFunction()
+    public static ActionsFunction getActionsFunction()
     {
         if(_actionsFunction == null)
             _actionsFunction = new AtascoActionsFunction();
