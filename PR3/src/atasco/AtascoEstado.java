@@ -39,7 +39,7 @@ public class AtascoEstado {
     
     //***************************************************************************
 	
-    private boolean ocupadas [][];
+    private int ocupadas [][]; //será -1 si está libre, n en {0,1,...,7} ocupada por el coche n
     private int numFilas;
     private int numColumnas;
     private Par <Integer,Integer> puerta;
@@ -51,8 +51,8 @@ public class AtascoEstado {
      */
     public AtascoEstado()
     {
-    	//Los Arrays por defecto se inicializan a false (según stack overflow)
-    	this.ocupadas  = new boolean [6][6];
+    	//Inicializamos ocupadas a libre  (luego actualizamos)
+    	this.ocupadas  = new int [][] {{-1,-1,-1,-1,-1,-1},{-1,-1,-1,-1,-1,-1},{-1,-1,-1,-1,-1,-1},{-1,-1,-1,-1,-1,-1},{-1,-1,-1,-1,-1,-1},{-1,-1,-1,-1,-1,-1}};
     	this.puerta = new Par<Integer, Integer>(2,5);
     	this.vehiculos = new Vehiculo[8];
     	this.numFilas = 6;
@@ -90,28 +90,22 @@ public class AtascoEstado {
      */
     public void actualizarOcupadas() {
     	
-    	//Ponemos todas a false
-    	for (int i = 0; i < numFilas; i++) {
-    		for (int j = 0; j < numColumnas; j++){
-    			ocupadas[i][j] = false;
-    		}
-    	}
     	
-    	for(int i = 0; i < 8; i++) {
+    	for(int i = 0; i < 8; i++) {//Recorremos los coches
     		int fila = vehiculos[i].getFila();
     		int columna = vehiculos[i].getColumna();
     		
     		if(vehiculos[i].getOrientacion().equals("V")) {
-    			ocupadas[fila][columna] = true;
-				ocupadas[fila + 1][columna] = true;			
+    			ocupadas[fila][columna] = i;
+				ocupadas[fila + 1][columna] = i;			
     			if (vehiculos[i].getTipo() == 2){ //camion en vertical, longitud 3
-    				ocupadas[fila + 2][columna] = true;
+    				ocupadas[fila + 2][columna] = i;
     			}
     		} else { //Horizontal
-    			ocupadas[fila][columna] = true;
-				ocupadas[fila][columna + 1] = true;
+    			ocupadas[fila][columna] = i;
+				ocupadas[fila][columna + 1] = i;
 				if (vehiculos[i].getTipo() == 2){ //camion en horizontal, longitud 3
-    				ocupadas[fila][columna + 2] = true;
+    				ocupadas[fila][columna + 2] = i;
     			}
 			}
     	}
@@ -202,14 +196,14 @@ public class AtascoEstado {
     	if (vehiculos[numV].getOrientacion().equals("V")) {//está en vertical, movemos hacia arriba
     		//hay espacio en la fila de arriba y está libre
     		if(vehiculos[numV].getFila() > 0 && 
-    				!ocupadas[vehiculos[numV].getFila()-1][vehiculos[numV].getColumna()]) {
+    				ocupadas[vehiculos[numV].getFila()-1][vehiculos[numV].getColumna()] == -1) {
     			valido = true;
     		}
     	}
     	else {//está en horizontal, movemos hacia la izquierda
     		//hay sitio a la izquierda y está libre
     		if(vehiculos[numV].getColumna() > 0 && 
-    				!ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()-1]) {
+    				ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()-1] == -1) {
     			valido = true;
     		}
     	}
@@ -227,14 +221,14 @@ public class AtascoEstado {
     		if (vehiculos[numV].getTipo() == 2) { //Camion
     			//hay hueco hacia abajo y está libre
     			if ((vehiculos[numV].getFila() + 2) < (numFilas - 1)&& 
-    					!ocupadas[vehiculos[numV].getFila()+3][vehiculos[numV].getColumna()]) {
+    					ocupadas[vehiculos[numV].getFila()+3][vehiculos[numV].getColumna()] ==-1) {
     				valido = true;
     			}
     		}
     		else { //coche
     			//hay hueco hacia abajo y está libre
     			if ((vehiculos[numV].getFila() + 1) < (numFilas - 1)&& 
-    					!ocupadas[vehiculos[numV].getFila()+2][vehiculos[numV].getColumna()]) {
+    					ocupadas[vehiculos[numV].getFila()+2][vehiculos[numV].getColumna()] == -1) {
     				valido = true;
     			}
     		}
@@ -243,14 +237,14 @@ public class AtascoEstado {
     		if (vehiculos[numV].getTipo() == 2) { //Camion
     			//hay hueco hacia la derecha y está libre
     			if ((vehiculos[numV].getColumna() + 2) < (numColumnas - 1)&& 
-    					!ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()+3]) {
+    					ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()+3] == -1) {
     				valido = true;
     			}
     		}
     		else { //coche
     			//hay hueco hacia la derecha y está libre
     			if ((vehiculos[numV].getColumna() + 1) < (numColumnas - 1)&& 
-    					!ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()+2]) {
+    					ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()+2] == -1) {
     				valido = true;
     			}
     		}
@@ -268,20 +262,20 @@ public class AtascoEstado {
     public void moveA(int numV) {
     	if (vehiculos[numV].getOrientacion().equals("V")) { //Mover arriba
     		if (vehiculos[numV].getTipo() == 2) { //Camion
-    			ocupadas[vehiculos[numV].getFila() + 2 ][vehiculos[numV].getColumna()] =  false;	
+    			ocupadas[vehiculos[numV].getFila() + 2 ][vehiculos[numV].getColumna()] =  -1;	
     		} else { //Coche
-    			ocupadas[vehiculos[numV].getFila() + 1 ][vehiculos[numV].getColumna()] =  false;
+    			ocupadas[vehiculos[numV].getFila() + 1 ][vehiculos[numV].getColumna()] =  -1;
     		}
-    		ocupadas[vehiculos[numV].getFila() - 1 ][vehiculos[numV].getColumna()] =  true;
+    		ocupadas[vehiculos[numV].getFila() - 1 ][vehiculos[numV].getColumna()] =  numV;
 			vehiculos[numV].setFila(vehiculos[numV].getFila() - 1);
 			
     	} else { //Mover a la izquierda
     		if (vehiculos[numV].getTipo() == 2) { //Camion
-    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() + 2] =  false;
+    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() + 2] =  -1;
     		} else { //Coche
-    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() + 1] =  false;
+    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() + 1] =  -1;
     		}
-    		ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() - 1] =  true;
+    		ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() - 1] =  numV;
 			vehiculos[numV].setColumna(vehiculos[numV].getColumna() - 1);
     	}
     }
@@ -294,13 +288,13 @@ public class AtascoEstado {
     	if (vehiculos[numV].getOrientacion().equals("V")) { //Mover abajo
     		if (vehiculos[numV].getTipo() == 2) { //Camion
     			
-    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()] =  false;
-    			ocupadas[vehiculos[numV].getFila() + 3 ][vehiculos[numV].getColumna()] =  true;
+    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()] =  -1;
+    			ocupadas[vehiculos[numV].getFila() + 3 ][vehiculos[numV].getColumna()] =  numV;
     			
     		} else { //Coche
     			
-    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()] =  false;
-    			ocupadas[vehiculos[numV].getFila() + 2 ][vehiculos[numV].getColumna()] =  true;
+    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()] =  -1;
+    			ocupadas[vehiculos[numV].getFila() + 2 ][vehiculos[numV].getColumna()] =  numV;
     		}
     		
 			vehiculos[numV].setFila(vehiculos[numV].getFila() + 1);
@@ -308,12 +302,12 @@ public class AtascoEstado {
     	} else { //Mover a la derecha
     		if (vehiculos[numV].getTipo() == 2) { //Camion
     			
-    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()] =  false;
-    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() + 3] =  true;
+    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()] =  -1;
+    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() + 3] =  numV;
     			
     		} else { //Coche
-    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()] =  false;
-    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() + 2] =  true;
+    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna()] =  -1;
+    			ocupadas[vehiculos[numV].getFila()][vehiculos[numV].getColumna() + 2] =  numV;
     		}
     		
 			vehiculos[numV].setColumna(vehiculos[numV].getColumna() + 1);
@@ -358,7 +352,7 @@ public class AtascoEstado {
     public Vehiculo[] copiarVehiculos() {
     	return this.vehiculos.clone();
     }
-    public boolean [][] copiarOcupadas() {
+    public int [][] copiarOcupadas() {
     	return this.ocupadas.clone();
     }
     
@@ -380,7 +374,7 @@ public class AtascoEstado {
     public Vehiculo getCocheRojo() {
     	return this.vehiculos[0];
     }
-    public boolean [][] getOcupadas(){
+    public int [][] getOcupadas(){
     	return this.ocupadas;
     }
 }

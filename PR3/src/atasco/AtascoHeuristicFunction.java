@@ -18,7 +18,7 @@ import atasco.AtascoEstado;
  *	movieran sin tener que mover otro coche previamente y, en el mejor, de los sentidos (es decir, en
  *	el que menos movimientos necesita para desbloquear la puerta).
  *
- *Ver si es consistente *********************************************************
+ *Ver si es consistente!!! *********************************************************
  */
 
 
@@ -36,7 +36,7 @@ public class AtascoHeuristicFunction implements HeuristicFunction{
 	        		int numPasos = estado.getCocheRojo().getColumna(); //casillas desde el coche a la puerta
 	        		valorHeur = numPasos;
 	        		for(int i=0; i < numPasos; i++ ) {//Para cada una vemos si están ocupadas
-	        			if(estado.getOcupadas()[estado.getCocheRojo().getFila()][i]) {//casilla ocupada
+	        			if(estado.getOcupadas()[estado.getCocheRojo().getFila()][i] != -1) {//casilla ocupada
 	        				valorHeur +=1;
 	        			}
 	        		}
@@ -46,7 +46,7 @@ public class AtascoHeuristicFunction implements HeuristicFunction{
 	        		//el +1 es porque el coche acaba en estado.getCocheRojo().getColumna()+1
 	        		valorHeur = numPasos;
 	        		for(int i=estado.getCocheRojo().getColumna()+1; i <= 5; i++ ) {//Para cada una vemos si están ocupadas
-	        			if(estado.getOcupadas()[estado.getCocheRojo().getFila()][i]) {//casilla ocupada
+	        			if(estado.getOcupadas()[estado.getCocheRojo().getFila()][i] != -1) {//casilla ocupada
 	        				valorHeur +=1;
 	        			}
 	        		}
@@ -57,7 +57,7 @@ public class AtascoHeuristicFunction implements HeuristicFunction{
 	        		int numPasos = estado.getCocheRojo().getFila(); //casillas desde el coche a la puerta
 	        		valorHeur = numPasos;
 	        		for(int i=0; i < numPasos; i++ ) {//Para cada una vemos si están ocupadas
-	        			if(estado.getOcupadas()[i][estado.getCocheRojo().getColumna()]) {//casilla ocupada
+	        			if(estado.getOcupadas()[i][estado.getCocheRojo().getColumna()] != -1) {//casilla ocupada
 	        				valorHeur +=1;
 	        			}
 	        		}
@@ -67,7 +67,7 @@ public class AtascoHeuristicFunction implements HeuristicFunction{
 	        		//el +1 es porque el coche acaba en estado.getCocheRojo().getFila()+1
 	        		valorHeur = numPasos;
 	        		for(int i=estado.getCocheRojo().getFila()+1; i <= 5; i++ ) {//Para cada una vemos si están ocupadas
-	        			if(estado.getOcupadas()[i][estado.getCocheRojo().getColumna()]) {//casilla ocupada
+	        			if(estado.getOcupadas()[i][estado.getCocheRojo().getColumna()] != -1) {//casilla ocupada
 	        				valorHeur +=1;
 	        			}
 	        		}
