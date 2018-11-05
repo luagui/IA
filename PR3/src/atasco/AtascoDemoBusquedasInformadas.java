@@ -21,8 +21,9 @@ import java.util.Properties;
 public class AtascoDemoBusquedasInformadas {
 	 public static void main(String [] args)
 	    {
+		 	movesHeuristic();
 	       //bloqueandoHeuristic();
-	       atascoHeuristic();
+	       //atascoHeuristic();
 	       //movesHeuristicWithTreeSearch();
 	       //missionaryHeuristicWithTreeSearch();
 	       //greedyBestFirstSearchmissionary();

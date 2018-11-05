@@ -27,9 +27,9 @@ public class AtascoDemoBusquedasNoInformadas {
 
 	    private static void AtascoDemo()
 	    {
-	        breadthFirstDemo();
+	        //breadthFirstDemo();
 	       //depthLimitedFirstDemo();
-	        //iterativeDeepeningDemo();
+	        iterativeDeepeningDemo();
 
 	    }
 

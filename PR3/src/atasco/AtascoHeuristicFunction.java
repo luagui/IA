@@ -31,7 +31,7 @@ public class AtascoHeuristicFunction implements HeuristicFunction{
 	    	double valorHeur = 0;
 	        AtascoEstado estado = (AtascoEstado) o;
 
-	        if(estado.getCocheRojo().getOrientacion().equals("H")) {//Coche rojo en vertical
+	        if(estado.getCocheRojo().getOrientacion().equals("H")) {//Coche rojo en horizontal
 	        	if(estado.getColumnaPuerta()==0) {//Tenemos la puerta a la izquierda
 	        		int numPasos = estado.getCocheRojo().getColumna(); //casillas desde el coche a la puerta
 	        		valorHeur = numPasos;
@@ -78,7 +78,7 @@ public class AtascoHeuristicFunction implements HeuristicFunction{
 	        	}
 	        	
 	        }
-	        System.out.print("Valar heuristico: " + valorHeur + "\n ");
+	        System.out.print("Valor heuristico: " + valorHeur + "\n ");
 	        return valorHeur;
 	    }
 	
