@@ -21,12 +21,12 @@ import java.util.Properties;
 public class AtascoDemoBusquedasInformadas {
 	 public static void main(String [] args)
 	    {
-		 	movesHeuristic();
+		 	//movesHeuristic();
 	       //bloqueandoHeuristic();
 	       //atascoHeuristic();
 	       //movesHeuristicWithTreeSearch();
-	       //missionaryHeuristicWithTreeSearch();
-	       //greedyBestFirstSearchmissionary();
+	      // atascoHeuristicWithTreeSearch();
+	       greedyBestFirstSearchAtasco();
 	       //greedyBestFirstSearchmoves();
 
 	    }
@@ -75,7 +75,7 @@ public class AtascoDemoBusquedasInformadas {
 	        }
 	    }
 
-	    private static void missionaryHeuristicWithTreeSearch()
+	    private static void atascoHeuristicWithTreeSearch()
 	    {
 	        System.out.println("\n Demo Atasco Astar TreeSearch(Atasco Heuristic) -->");
 	        try
@@ -117,7 +117,7 @@ public class AtascoDemoBusquedasInformadas {
 	        }
 	    }
 
-	    private static void greedyBestFirstSearchmissionary()
+	    private static void greedyBestFirstSearchAtasco()
 	    {
 	        System.out.println("\n Demo Atasco greedy best first search(Atasco Heuristic) -->");
 	        try
