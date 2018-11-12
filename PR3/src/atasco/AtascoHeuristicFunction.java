@@ -8,17 +8,10 @@ import atasco.AtascoEstado;
 /**
  *Explicación de la heurística:
  *
- *ESTO ERA LA IDEA INICIAL
- *Contamos el número de casillas entre el coche rojo y la puerta. 
- *A eso le sumamos, por cada casilla bloqueada (está ocupada) el número de casillas que harían
- *falta para que el camino a la salida quedara libre.
- *
- *Es una heurística admisible:
- *Nunca el coste va a ser menor, como mucho igual -> En el caso de que los coches que obstruyen se 
- *	movieran sin tener que mover otro coche previamente y, en el mejor, de los sentidos (es decir, en
- *	el que menos movimientos necesita para desbloquear la puerta).
- *
- *Ver si es consistente!!! *********************************************************
+ * Consiste en contar las casillas que quedan le quedan al coche rojo
+ *  hasta llegar a la puerta y para cada una de esas casillas sumarle 1 a la heurística,
+ *  con la intución de que hay que hacer un movimiento más para desplazar ese coche.
+ *  Más info en la memoria. 
  */
 
 

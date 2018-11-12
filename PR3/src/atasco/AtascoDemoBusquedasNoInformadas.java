@@ -1,3 +1,4 @@
+
 package atasco;
 
 
@@ -30,9 +31,9 @@ public class AtascoDemoBusquedasNoInformadas {
 
 	    private static void AtascoDemo()
 	    {
-	        //breadthFirstDemo();
+	        breadthFirstDemo();
 	       //depthLimitedFirstDemo();
-	        iterativeDeepeningDemo();
+	        //iterativeDeepeningDemo();
 	    	//depthFirstDemo();
 
 	    }
@@ -88,7 +89,7 @@ public class AtascoDemoBusquedasNoInformadas {
 	                    AtascoFunctionFactory.getResultFunction(),new AtascoGoalTest(),
 	                    new AtascoStepCostFunction());
 	            //Aquí
-	            DepthLimitedSearch search = new DepthLimitedSearch(10);
+	            DepthLimitedSearch search = new DepthLimitedSearch(30);
 	            SearchAgent agent = new SearchAgent(problem,search);
 
 	            printActions(agent.getActions());

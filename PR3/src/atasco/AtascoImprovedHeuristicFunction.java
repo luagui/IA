@@ -3,6 +3,18 @@ package atasco;
 import aima.core.search.framework.evalfunc.HeuristicFunction;
 import atasco.AtascoEstado;
 
+
+
+/**
+ *Explicación de la heurística:
+ *
+ * Consiste en contar las casillas que quedan le quedan al coche rojo
+ *  hasta llegar a la puerta y para cada una de esas casillas sumarle tantas casillas como 
+ *  haya que desplazar el vehículo que la bloquea (solo nos fijamos en los
+ *  vehículos de su misma columna) para desbloquearla
+ *  Más info en la memoria. 
+ */
+
 public class AtascoImprovedHeuristicFunction implements HeuristicFunction {
 
 	@Override
@@ -21,17 +33,12 @@ public class AtascoImprovedHeuristicFunction implements HeuristicFunction {
 					}
 				}
 			} else {// Tenemos la puerta a la derecha
-				System.out.print("Tiene que entrar por aqui \n ");
 				int numPasos = 5 - (estado.getCocheRojo().getColumna() + 1); // casillas desde el coche a la puerta
-				System.out.print("Columna del coche rojo: " + estado.getCocheRojo().getColumna() + "\n");
-				System.out.print("Numero de casillas a la puerta: " + numPasos + "\n");
 				// el +1 es porque el coche acaba en estado.getCocheRojo().getColumna()+1
 				valorHeur = numPasos;
 				for (int i = estado.getCocheRojo().getColumna() + 2; i <= 5; i++) {// Para cada una vemos si están
 																					// ocupadas
 					if (estado.getOcupadas()[estado.getCocheRojo().getFila()][i] != -1) {// casilla ocupada
-						System.out.print(
-								"Casilla " + "(" + estado.getCocheRojo().getFila() + "," + (i) + ")" + " ocupada \n");
 						int numV = estado.getOcupadas()[estado.getCocheRojo().getFila()][i];
 						valorHeur += comprobarObstaculosColumna(estado, numV);
 					}
@@ -77,15 +84,16 @@ public class AtascoImprovedHeuristicFunction implements HeuristicFunction {
 			// es un coche el que bloquea
 			if (vehiculoFila == estado.getCocheRojo().getFila()) { // tiene la parte de arriba en la fila de la puerta
 						if (vehiculoFila - 2 >= 0) { //Se podria hacer hueco hacia arriba
-							valorHeurArriba = 2;
+							valorHeurArriba = 2; //Como mínimo habría que mover 2 casillas hacia arriba el coche 
 							for (int i = 1; i <= 2; i++) { //Comprobamos los dos huecos superiores a ver si están ocupados
 								if (estado.getOcupadas()[vehiculoFila - i][vehiculoColumna] != -1) { //Casilla Ocupada
-									valorHeurArriba += 1;
+									valorHeurArriba += 1; //Si están ocupados habría que desplazar ese vehíuclo, 
+									//como mínimo se necesitaría 1 movimiento
 								}
 							}
 						}
 						if ((vehiculoFila + 2) < 6) { //Se podria hacer hueco hacia abajo
-							valorHeurAbajo = 1;
+							valorHeurAbajo = 1; //bastaría con desplazar el coche 1 casilla hacia abajo para desbloquear
 							if (estado.getOcupadas()[vehiculoFila + 2][vehiculoColumna] != -1) { //Casilla Ocupada
 								valorHeurAbajo += 1;
 							}

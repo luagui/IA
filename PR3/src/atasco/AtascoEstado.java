@@ -3,7 +3,6 @@ package atasco;
 
 import aima.core.agent.Action;
 import aima.core.agent.impl.DynamicAction;
-import aima.core.util.datastructure.Pair;
 
 public class AtascoEstado {
 	
@@ -34,8 +33,8 @@ public class AtascoEstado {
     /*
      * La orientacion será H o V e indicará si el coche está en horizontal o vertical
      * 
-     * Además usamos una matriz 6x6 de booleanos "ocupadas" donde iremos guardando casillas
-     * ocupadas con true, o libres con false*/
+     * Además usamos una matriz 6x6 de enteros "ocupadas" donde iremos guardando casillas
+     * ocupadas con el número de coche correspondiente, o libres con -1*/
     
     //***************************************************************************
 	
