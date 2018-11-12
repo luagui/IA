@@ -5,11 +5,14 @@ import aima.core.agent.Action;
 import aima.core.search.framework.*;
 //Esto no sé por qué hay que añadirlo si se supone que la de arriba lo incluye
 import aima.core.search.framework.problem.*;
-
+import aima.core.search.framework.qsearch.GraphSearch;
 import aima.core.search.uninformed.BreadthFirstSearch;
+import aima.core.search.uninformed.DepthFirstSearch;
 //import aima.core.search.uninformed.DepthFirstSearch;
 import aima.core.search.uninformed.DepthLimitedSearch;
 import aima.core.search.uninformed.IterativeDeepeningSearch;
+
+
 
 
 import java.util.Iterator;
@@ -30,9 +33,29 @@ public class AtascoDemoBusquedasNoInformadas {
 	        //breadthFirstDemo();
 	       //depthLimitedFirstDemo();
 	        iterativeDeepeningDemo();
+	    	//depthFirstDemo();
 
 	    }
+	    
+	    private static void depthFirstDemo() {
+	    	System.out.println("\nAtascoDepthDemo--->");
+	        try
+	        {
+	            Problem problem
+	                    = new Problem(estadoInicial,AtascoFunctionFactory.getActionsFunction(),
+	                    AtascoFunctionFactory.getResultFunction(),new AtascoGoalTest(),
+	                    new AtascoStepCostFunction());
+	            //aquí
+	            DepthFirstSearch search = new DepthFirstSearch(new GraphSearch());
+	            SearchAgent agent = new SearchAgent(problem,search);
 
+	            printActions(agent.getActions());
+	            printInstrumentation(agent.getInstrumentation());
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    
 	    private static void  breadthFirstDemo()
 	    {
 	        System.out.println("\nAtascoBFSDemo--->");

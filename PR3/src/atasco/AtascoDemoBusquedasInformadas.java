@@ -11,7 +11,7 @@ import atasco.AtascoEstado;
 import atasco.AtascoFunctionFactory;
 import atasco.AtascoGoalTest;
 import atasco.AtascoHeuristicFunction;
-import atasco.AtascoBloqHeuristicFunction;
+import atasco.AtascoImprovedHeuristicFunction;
 
 import java.util.Iterator;
 import java.util.List;
@@ -21,18 +21,17 @@ import java.util.Properties;
 public class AtascoDemoBusquedasInformadas {
 	 public static void main(String [] args)
 	    {
-		 	//movesHeuristic();
-	       //bloqueandoHeuristic();
+		 	//improvedHeuristic();
 	       //atascoHeuristic();
-	       //movesHeuristicWithTreeSearch();
-	      // atascoHeuristicWithTreeSearch();
-	       greedyBestFirstSearchAtasco();
-	       //greedyBestFirstSearchmoves();
+	       //improvedHeuristicWithTreeSearch();
+	       //atascoHeuristicWithTreeSearch();
+	       //greedyBestFirstSearchAtasco();
+	      //greedyBestFirstSearchImproved();
 
 	    }
 
 
-	    private static void movesHeuristic()
+	    private static void improvedHeuristic()
 	    {
 	        System.out.println("\n Demo Atasco Astar with GraphSearch(Moves Heuristic) -->");
 	        try
@@ -41,7 +40,7 @@ public class AtascoDemoBusquedasInformadas {
 	                    AtascoFunctionFactory.getActionsFunction(),
 	                    AtascoFunctionFactory.getResultFunction(),
 	                    new AtascoGoalTest());
-	            AStarSearch search = new AStarSearch(new GraphSearch(),new AtascoBloqHeuristicFunction());
+	            AStarSearch search = new AStarSearch(new GraphSearch(),new AtascoImprovedHeuristicFunction());
 	            SearchAgent agent = new SearchAgent(problem,search);
 
 	            printActions(agent.getActions());
@@ -54,7 +53,7 @@ public class AtascoDemoBusquedasInformadas {
 	    }
 
 
-	    private static void movesHeuristicWithTreeSearch()
+	    private static void improvedHeuristicWithTreeSearch()
 	    {
 	        System.out.println("\n Demo Atasco Astar with  TreeSearch(Moves Heuristic) -->");
 	        try
@@ -63,7 +62,7 @@ public class AtascoDemoBusquedasInformadas {
 	                    AtascoFunctionFactory.getActionsFunction(),
 	                    AtascoFunctionFactory.getResultFunction(),
 	                    new AtascoGoalTest());
-	            AStarSearch search = new AStarSearch(new TreeSearch(),new AtascoBloqHeuristicFunction());
+	            AStarSearch search = new AStarSearch(new TreeSearch(),new AtascoImprovedHeuristicFunction());
 	            SearchAgent agent = new SearchAgent(problem,search);
 
 	            printActions(agent.getActions());
@@ -139,7 +138,7 @@ public class AtascoDemoBusquedasInformadas {
 
 	    }
 
-	    private static void greedyBestFirstSearchmoves()
+	    private static void greedyBestFirstSearchImproved()
 	    {
 	        System.out.println("\n Demo Atasco greedy best first search(moves Heuristic) -->");
 	        try
@@ -148,7 +147,7 @@ public class AtascoDemoBusquedasInformadas {
 	                    AtascoFunctionFactory.getActionsFunction(),
 	                    AtascoFunctionFactory.getResultFunction(),
 	                    new AtascoGoalTest());
-	            GreedyBestFirstSearch search = new GreedyBestFirstSearch(new GraphSearch(),new AtascoBloqHeuristicFunction());
+	            GreedyBestFirstSearch search = new GreedyBestFirstSearch(new GraphSearch(),new AtascoImprovedHeuristicFunction());
 	            SearchAgent agent = new SearchAgent(problem,search);
 
 	            printActions(agent.getActions());
