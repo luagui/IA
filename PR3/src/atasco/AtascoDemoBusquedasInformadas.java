@@ -21,7 +21,7 @@ import java.util.Properties;
 public class AtascoDemoBusquedasInformadas {
 	 public static void main(String [] args)
 	    {
-		 	//improvedHeuristic();
+		 	improvedHeuristic();
 	       //atascoHeuristic();
 	       //improvedHeuristicWithTreeSearch();
 	       //atascoHeuristicWithTreeSearch();
