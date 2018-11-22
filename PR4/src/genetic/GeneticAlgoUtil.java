@@ -70,7 +70,7 @@ public class GeneticAlgoUtil {
 			}
 		}
 
-			return Math.abs(RESULTADO - fitness);
+			return 1/Math.abs(RESULTADO - fitness);
 		}
 
 		
