@@ -7,11 +7,16 @@ public class Vehiculo {
 	private int columna;
 	private String orientacion;
 	private int tipo;
-	 
-	
-	// tipo == 0 -> Coche rojo
-	// tipo == 1 -> Coche
-	// tipo == 3 -> Camion
+
+	/*
+	 * fila y columna son la posición de más a la izquierda del vehículo en caso de que este
+	 * esté en horizontal o de más arriba en caso de que este esté en vertical
+	 * orientacion = H -> vehículo en horizontal
+	 * orientacion = V -> vehículo en vertical 
+	 * tipo == 0 -> Coche rojo
+	 * tipo == 1 -> Coche
+	 * tipo == 3 -> Camion */
+
 	
 	public Vehiculo (int posicionFila, int posicionColumna, String orientacion, int tipo) {
 		this.fila = posicionFila;
@@ -55,7 +60,7 @@ public class Vehiculo {
 	        Vehiculo otroVehiculo = (Vehiculo) o;
 	        
 	        eq = (this.columna == otroVehiculo.getColumna()) && (this.fila == otroVehiculo.getFila())
-	        		&& (this.orientacion == otroVehiculo.getOrientacion()) && (this.tipo == otroVehiculo.getTipo());
+	        		&& (this.orientacion.equals(otroVehiculo.getOrientacion())) && (this.tipo == otroVehiculo.getTipo());
 	        
 	        return eq;
 	   }
