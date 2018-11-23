@@ -3,16 +3,16 @@ package genetic;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Random;
+
 
 
 import aima.core.search.framework.problem.GoalTest;
 import aima.core.search.local.FitnessFunction;
 import aima.core.search.local.Individual;
-import aima.core.util.datastructure.XYLocation;
 
 public class GeneticAlgoUtil {
-
+	private static double objetivo = 431.0;
+	
 	public static FitnessFunction<Integer> getFitnessFunction() {
 		return new GeneticFitnessFunction();
 	}
@@ -46,44 +46,92 @@ public class GeneticAlgoUtil {
 	public static class GeneticFitnessFunction implements FitnessFunction<Integer> {
 
 		public double apply(Individual<Integer> individual) {
-			double fitness = individual.getRepresentation().get(0);
-			int num;
-		for(int i =1; i < arraySize-1; i += 2) {
-			//hay que sacar el array size de algún sitio
-			//o suponer que es 11 siempre
-			
-			//num es el número que sigue a la operación i
-			num = individual.getRepresentation().get(i+1);
-			if(i % 2 == 1) { //hay operación
-				if ((individual.getRepresentation().get(i) % 4) == 0) {//division
-					fitness = fitness / num;
-				}
-				else if ((individual.getRepresentation().get(i) % 4) == 1) {//suma
-					fitness = fitness + num;
-				}
-				else if ((individual.getRepresentation().get(i) % 4) == 2) {//resta
-					fitness = fitness - num;
-				}
-				else {//multiplicación
-					fitness = fitness * num;
-				}
+			double value = auxOperation(individual);
+			if (objetivo == value) {
+				return Double.MAX_VALUE;
 			}
-		}
-
-			return 1/Math.abs(RESULTADO - fitness);
+			return 1/Math.abs(objetivo - value);
 		}
 
 		
 	}
 
-	public static class GeneticAlgoGoalTest implements GoalTest {
-		
-		@Override
-		public boolean isGoalState(Object state) {
-			Individual<Integer> individual = (Individual<Integer>) state; 
-			//no sé si esto resultaría
-			return false;
+	public static class GeneticAlgoGoalTest  implements GoalTest {	
+		public boolean isGoalState(Object arg0) {
+			//Cast un poco guarro
+			return objetivo == auxOperation((Individual<Integer>) arg0);
 		}
+	
 	}
 	
+	public static double auxOperation (Individual<Integer> individual) {
+		double operation = individual.getRepresentation().get(0);
+		if (operation == 11.0) {
+			operation = 25.0;
+		} else if (operation == 12.0) {
+			operation = 50.0;
+		}
+		double num;
+		for(int i =1; i < individual.length() -1; i += 2) {
+		
+		//num es el número que sigue a la operación i
+		num = (double) individual.getRepresentation().get(i+1);
+		if (num == 11.0) {
+			operation = 25.0;
+		} else if (num == 12.0) {
+			num = 50.0;
+		}
+			if ((individual.getRepresentation().get(i) % 4) == 0) {//division
+				operation = operation / num;
+			}
+			else if ((individual.getRepresentation().get(i) % 4) == 1) {//suma
+				operation = operation + num;
+			}
+			else if ((individual.getRepresentation().get(i) % 4) == 2) {//resta
+				operation = operation - num;
+			}
+			else {//multiplicación
+				operation = operation * num;
+			}
+		}
+		return operation;
+	}
+	public static String printIndividual(Individual<Integer> individual){
+		String result = new String();
+		int num = individual.getRepresentation().get(0);
+		
+		if (num == 11.0) {
+			result += "25";
+		} else if (num == 12.0) {
+			result += "50";
+		} else {
+			result += String.valueOf(num);
+		}
+		
+		for(int i =1; i < individual.length() -1; i += 2) {
+		
+			if ((individual.getRepresentation().get(i) % 4) == 0) {//division
+				result +=" /";
+			}
+			else if ((individual.getRepresentation().get(i) % 4) == 1) {//suma
+				result +=" +";
+			}
+			else if ((individual.getRepresentation().get(i) % 4) == 2) {//resta
+				result +=" -";
+			}
+			else {//multiplicación
+				result +=" *";
+			}
+			
+			num = individual.getRepresentation().get(i+1);
+			if (num == 11.0) {
+				result += " 25";
+			} else if (num == 12.0) {
+				result += " 50";
+			} else {
+				result = result + " " + String.valueOf(num);
+			}
+		}
+		return result;
+	}
 }
