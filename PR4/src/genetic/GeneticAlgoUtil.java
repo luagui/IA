@@ -35,8 +35,8 @@ public class GeneticAlgoUtil {
 	public static Collection<Integer> getFiniteAlphabetForBoardOfSize(int size) {
 		Collection<Integer> fab = new ArrayList<>();
 		
-		for (int i = 0; i < size; i++) {
-			fab.add(i);
+		for (int i = 0; i <= size; i++) { //Le pasamos arraySize = 11
+			fab.add(i +  1);
 		}
 
 		return fab;

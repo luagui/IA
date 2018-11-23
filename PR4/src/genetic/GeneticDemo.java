@@ -32,6 +32,9 @@ public class GeneticDemo {
 
 			GeneticAlgorithm<Integer> ga = new GeneticAlgorithm<>(arraySize,
 					GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), 0.15);
+			
+			GeneticAlgoProb gap = new GeneticAlgoProb(arraySize,
+					GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), 0.15, 0.70);
 
 			// Run for a set amount of time
 			Individual<Integer> bestIndividual = ga.geneticAlgorithm(population, fitnessFunction, goalTest, 1000L);
@@ -49,6 +52,20 @@ public class GeneticDemo {
 			// Run till goal is achieved
 			bestIndividual = ga.geneticAlgorithm(population, fitnessFunction, goalTest, 0L);
 
+			System.out.println("");
+			System.out
+					.println("Goal Test Best Individual=\n" + GeneticAlgoUtil.auxOperation(bestIndividual));
+			System.out.println("Board Size      = " + arraySize);
+			System.out.println("Fitness         = " + fitnessFunction.apply(bestIndividual));
+			System.out.println("Best Individual = " + GeneticAlgoUtil.printIndividual(bestIndividual));
+			System.out.println("Is Goal         = " + goalTest.isGoalState(bestIndividual));
+			System.out.println("Population Size = " + ga.getPopulationSize());
+			System.out.println("Itertions       = " + ga.getIterations());
+			System.out.println("Took            = " + ga.getTimeInMilliseconds() + "ms.");
+			
+			//Run with probability of not reproducing
+			
+			bestIndividual = gap.geneticAlgorithm(population, fitnessFunction, goalTest, 0L);	
 			System.out.println("");
 			System.out
 					.println("Goal Test Best Individual=\n" + GeneticAlgoUtil.auxOperation(bestIndividual));
