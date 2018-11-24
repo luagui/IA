@@ -64,7 +64,9 @@ public class GeneticAlgoUtil {
 	
 	}
 	
+	//nos devuelve el valor de hacer todas las operaciones del individuo
 	public static double auxOperation (Individual<Integer> individual) {
+		//operation = primer número del individuo
 		double operation = individual.getRepresentation().get(0);
 		if (operation == 11.0) {
 			operation = 25.0;
@@ -72,6 +74,7 @@ public class GeneticAlgoUtil {
 			operation = 50.0;
 		}
 		double num;
+		//recorremos los siguientes elementos del individuo
 		for(int i =1; i < individual.length() -1; i += 2) {
 		
 		//num es el número que sigue a la operación i

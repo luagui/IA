@@ -35,6 +35,12 @@ public class GeneticDemo {
 			
 			GeneticAlgoProb gap = new GeneticAlgoProb(arraySize,
 					GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), 0.15, 0.70);
+			
+			GeneticAlgorithm<Integer> ga2Children = new GeneticAlgoNewCruce(arraySize,
+					GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), 0.15);
+			
+			GeneticAlgorithm<Integer> gaNoDest = new GeneticNoDestruct(arraySize,
+					GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), 0.15);
 
 			// Run for a set amount of time
 			Individual<Integer> bestIndividual = ga.geneticAlgorithm(population, fitnessFunction, goalTest, 1000L);
@@ -53,6 +59,7 @@ public class GeneticDemo {
 			bestIndividual = ga.geneticAlgorithm(population, fitnessFunction, goalTest, 0L);
 
 			System.out.println("");
+			System.out.println("Run till goal is achieved");
 			System.out
 					.println("Goal Test Best Individual=\n" + GeneticAlgoUtil.auxOperation(bestIndividual));
 			System.out.println("Board Size      = " + arraySize);
@@ -60,23 +67,55 @@ public class GeneticDemo {
 			System.out.println("Best Individual = " + GeneticAlgoUtil.printIndividual(bestIndividual));
 			System.out.println("Is Goal         = " + goalTest.isGoalState(bestIndividual));
 			System.out.println("Population Size = " + ga.getPopulationSize());
-			System.out.println("Itertions       = " + ga.getIterations());
+			System.out.println("Iterations       = " + ga.getIterations());
 			System.out.println("Took            = " + ga.getTimeInMilliseconds() + "ms.");
 			
 			//Run with probability of not reproducing
 			
 			bestIndividual = gap.geneticAlgorithm(population, fitnessFunction, goalTest, 0L);	
 			System.out.println("");
+			System.out.println("Run with probability of not reproducing");
 			System.out
 					.println("Goal Test Best Individual=\n" + GeneticAlgoUtil.auxOperation(bestIndividual));
 			System.out.println("Board Size      = " + arraySize);
 			System.out.println("Fitness         = " + fitnessFunction.apply(bestIndividual));
 			System.out.println("Best Individual = " + GeneticAlgoUtil.printIndividual(bestIndividual));
 			System.out.println("Is Goal         = " + goalTest.isGoalState(bestIndividual));
-			System.out.println("Population Size = " + ga.getPopulationSize());
-			System.out.println("Itertions       = " + ga.getIterations());
-			System.out.println("Took            = " + ga.getTimeInMilliseconds() + "ms.");
+			System.out.println("Population Size = " + gap.getPopulationSize());
+			System.out.println("Iterations       = " + gap.getIterations());
+			System.out.println("Took            = " + gap.getTimeInMilliseconds() + "ms.");
 
+			
+			//Run with two children
+			
+			bestIndividual = ga2Children.geneticAlgorithm(population, fitnessFunction, goalTest, 0L);	
+			System.out.println("");
+			System.out.println("Run with two children");
+			System.out
+					.println("Goal Test Best Individual=\n" + GeneticAlgoUtil.auxOperation(bestIndividual));
+			System.out.println("Board Size      = " + arraySize);
+			System.out.println("Fitness         = " + fitnessFunction.apply(bestIndividual));
+			System.out.println("Best Individual = " + GeneticAlgoUtil.printIndividual(bestIndividual));
+			System.out.println("Is Goal         = " + goalTest.isGoalState(bestIndividual));
+			System.out.println("Population Size = " + ga2Children.getPopulationSize());
+			System.out.println("Iterations       = " + ga2Children.getIterations());
+			System.out.println("Took            = " + ga2Children.getTimeInMilliseconds() + "ms.");
+			
+			//Run no destructive algorithm
+			bestIndividual = gaNoDest.geneticAlgorithm(population, fitnessFunction, goalTest, 0L);	
+			System.out.println("");
+			System.out.println("Run no destructive algorithm");
+			System.out
+					.println("Goal Test Best Individual=\n" + GeneticAlgoUtil.auxOperation(bestIndividual));
+			System.out.println("Board Size      = " + arraySize);
+			System.out.println("Fitness         = " + fitnessFunction.apply(bestIndividual));
+			System.out.println("Best Individual = " + GeneticAlgoUtil.printIndividual(bestIndividual));
+			System.out.println("Is Goal         = " + goalTest.isGoalState(bestIndividual));
+			System.out.println("Population Size = " + gaNoDest.getPopulationSize());
+			System.out.println("Iterations       = " + gaNoDest.getIterations());
+			System.out.println("Took            = " + gaNoDest.getTimeInMilliseconds() + "ms.");
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
