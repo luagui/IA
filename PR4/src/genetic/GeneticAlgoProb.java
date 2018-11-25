@@ -29,7 +29,7 @@ public class GeneticAlgoProb extends GeneticAlgorithm<Integer> {
 				if (random.nextDouble() <= mutationProbability) {
 					child = mutate(child);
 				}
-			} else { //No se cruza y devolvemos el padre x
+			} else { //No se cruza y devolvemos copia del padre x
 				child = x;
 			}
 			newPopulation.add(child);

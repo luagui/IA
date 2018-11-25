@@ -80,7 +80,7 @@ public class GeneticAlgoUtil {
 		//num es el número que sigue a la operación i
 		num = (double) individual.getRepresentation().get(i+1);
 		if (num == 11.0) {
-			operation = 25.0;
+			num = 25.0;
 		} else if (num == 12.0) {
 			num = 50.0;
 		}
