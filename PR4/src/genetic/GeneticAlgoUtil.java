@@ -137,4 +137,8 @@ public class GeneticAlgoUtil {
 		}
 		return result;
 	}
+	
+	public static double getGoal(){
+		return GeneticAlgoUtil.objetivo;
+	}
 }
