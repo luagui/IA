@@ -6,6 +6,7 @@ import java.util.List;
 
 
 
+
 import aima.core.search.framework.problem.GoalTest;
 import aima.core.search.local.FitnessFunction;
 import aima.core.search.local.Individual;
@@ -57,8 +58,8 @@ public class GeneticAlgoUtil {
 	}
 
 	public static class GeneticAlgoGoalTest  implements GoalTest {	
+		@SuppressWarnings("unchecked")
 		public boolean isGoalState(Object arg0) {
-			//Cast un poco guarro
 			return objetivo == auxOperation((Individual<Integer>) arg0);
 		}
 	

@@ -1,12 +1,9 @@
 package genetic;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
+
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import aima.core.environment.nqueens.NQueensGenAlgoUtil;
 import aima.core.search.framework.problem.GoalTest;
 import aima.core.search.local.FitnessFunction;
 import aima.core.search.local.GeneticAlgorithm;
@@ -27,8 +24,8 @@ public class GeneticDemo {
 
 	public static void main(String[] args) {
 
-		//myGeneticAlgorithmSearch();
-		bancoDePruebas();
+		myGeneticAlgorithmSearch();
+		//bancoDePruebas();
 	}
 
 	private static void myGeneticAlgorithmSearch() {
@@ -44,21 +41,21 @@ public class GeneticDemo {
 
 				
 			GeneticAlgorithm<Integer> ga = new GeneticAlgorithm<>(arraySize,
-					GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), 0.15);
+					GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), 0.5);
 			
 			GeneticAlgoProb gap = new GeneticAlgoProb(arraySize,
-					GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), 0.15, 0.80);
+					GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), 0.5, 0.80);
 			
 			GeneticAlgorithm<Integer> ga2Children = new GeneticAlgoNewCruce(arraySize,
-					GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), 0.15);
+					GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), 0.5);
 			
 			GeneticAlgorithm<Integer> gaNoDest = new GeneticNoDestruct(arraySize,
-					GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), 0.15);
+					GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), 0.5);
 			
 			
 			Individual<Integer> bestIndividual;
 			
-			/*
+			
 			// Run for a set amount of time
 			bestIndividual = ga.geneticAlgorithm(population, fitnessFunction, goalTest, 1000L);
 	
@@ -71,12 +68,12 @@ public class GeneticDemo {
 			System.out.println("Population Size = " + ga.getPopulationSize());
 			System.out.println("Iterations      = " + ga.getIterations());
 			System.out.println("Took            = " + ga.getTimeInMilliseconds() + "ms.");
+			System.out.println("");
 			
-			*/
 			
-			/*
+			
 			// Run till goal is achieved
-			bestIndividual = ga.geneticAlgorithm(population, fitnessFunction, goalTest, 10000L);	
+			bestIndividual = ga.geneticAlgorithm(population, fitnessFunction, goalTest, 0L);	
 			System.out.println("Run till goal is achieved");
 			System.out.println("Run with probability of not reproducing");
 			System.out.println("Goal            = " + GeneticAlgoUtil.getGoal());
@@ -87,14 +84,14 @@ public class GeneticDemo {
 			System.out.println("Population Size = " + ga.getPopulationSize());
 			System.out.println("Iterations      = " + ga.getIterations());
 			System.out.println("Took            = " + ga.getTimeInMilliseconds() + "ms.");
+			System.out.println("");
 			
-			*/
 			
 			
 			
 			//Run with probability of not reproducing
 			
-			/*
+			
 			bestIndividual = gap.geneticAlgorithm(population, fitnessFunction, goalTest, 10000L);	
 			System.out.println("");
 			System.out.println("Run with probability of not reproducing");
@@ -106,9 +103,10 @@ public class GeneticDemo {
 			System.out.println("Population Size = " + gap.getPopulationSize());
 			System.out.println("Iterations      = " + gap.getIterations());
 			System.out.println("Took            = " + gap.getTimeInMilliseconds() + "ms.");
+			System.out.println("");
 
 			
-			*/
+			
 			
 			
 			//Run with two children
@@ -124,15 +122,15 @@ public class GeneticDemo {
 			System.out.println("Population Size = " + ga2Children.getPopulationSize());
 			System.out.println("Iterations      = " + ga2Children.getIterations());
 			System.out.println("Took            = " + ga2Children.getTimeInMilliseconds() + "ms.");
+			System.out.println("");
 			
 			
 			
 			
-			/*
 			//Run no destructive algorithm
 			
 			
-			bestIndividual = gaNoDest.geneticAlgorithm(population, fitnessFunction, goalTest, 1000L);	
+			bestIndividual = gaNoDest.geneticAlgorithm(population, fitnessFunction, goalTest, 10000L);	
 			System.out.println("Run no destructive algorithm");
 			System.out.println("Goal            = " + GeneticAlgoUtil.getGoal());
 			System.out.println("Fitness         = " + fitnessFunction.apply(bestIndividual));
@@ -142,7 +140,7 @@ public class GeneticDemo {
 			System.out.println("Population Size = " + gaNoDest.getPopulationSize());
 			System.out.println("Iterations      = " + gaNoDest.getIterations());
 			System.out.println("Took            = " + gaNoDest.getTimeInMilliseconds() + "ms.");
-			*/
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -150,14 +148,16 @@ public class GeneticDemo {
 	}
 
 	/*
-	 * Funcion utilizada para sacar estádisticas
+	 * Funcion utilizada para sacar estádisticas de los algoritmos con diferentes valores
+	 * en sus parámetros
 	 */
+	@SuppressWarnings("unused")
 	private static void bancoDePruebas() {
-		int población = 60;
+		int población = 6;
 		int ejecuciones = 100;
 		long maxTimeMiliseconds = 5000L;
 		double probMutacion = 1;
-		double probCruce = 0.7;
+		double probCruce = 0.3;
 		long iteracionesTotales = 0;
 		long tiempoTotal = 0;
 		long aciertosTotales = 0;
@@ -167,8 +167,28 @@ public class GeneticDemo {
 		FitnessFunction<Integer> fitnessFunction = GeneticAlgoUtil.getFitnessFunction();
 		GoalTest goalTest = GeneticAlgoUtil.getGoalTest();
 		
+		// Descomentar para utiliza
+		
+		
+		GeneticAlgorithm<Integer> ga = new GeneticAlgorithm<>(arraySize,
+				GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), probMutacion);
+	 
+		
+		/*	
 		GeneticAlgorithm<Integer> ga = new GeneticAlgoProb(arraySize,
-				GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), probMutacion,probCruce);
+				GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), probMutacion,probCruce);				
+		*/
+		
+		/*
+		GeneticAlgorithm<Integer> ga = new GeneticAlgoNewCruce(arraySize,
+				GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), probMutacion);
+		*/
+		
+		/*	 
+		GeneticAlgorithm<Integer> ga = new GeneticNoDestruct(arraySize,
+				GeneticAlgoUtil.getFiniteAlphabetForBoardOfSize(arraySize), probMutacion);
+		*/
+		
 		
 		Individual<Integer> bestIndividual;
 		for(int i = 0; i < ejecuciones; i++) {
@@ -186,15 +206,15 @@ public class GeneticDemo {
 			}
 		}
 		porcentaje = (double)aciertosTotales / (double)ejecuciones;
+		
 		System.out.println("Maximo tiempo ejecucion   = " + maxTimeMiliseconds + "ms.");
 		System.out.println("Numero de ejecuciones     = " + ejecuciones);
 		System.out.println("Poblacion                 = " + población);
-		System.out.println("Probabilidad de cruce     = " + probCruce);
+	//	System.out.println("Probabilidad de cruce     = " + probCruce);
 		System.out.println("Probabilidad de mutacion  = " + probMutacion);
 		System.out.println("Iteraciones Medias        = " + (iteracionesTotales / ejecuciones));
 		System.out.println("Tiempo Medio              = " + (tiempoTotal / ejecuciones)+ "ms.");
 		System.out.println("Porcentaje Acierto        = " + porcentaje*100 + " %");
-		
-	}
-	
+		}
 }
+

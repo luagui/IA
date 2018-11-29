@@ -14,7 +14,7 @@ public class GeneticNoDestruct extends GeneticAlgorithm<Integer> {
 	public GeneticNoDestruct(int individualLength, Collection<Integer> finiteAlphabet, double mutationProbability) {
 		super(individualLength, finiteAlphabet, mutationProbability);
 	}
-	
+
 	public Individual<Integer> geneticAlgorithm(Collection<Individual<Integer>> initPopulation, FitnessFunction<Integer> fitnessFn,
 			GoalTest goalTest, long maxTimeMilliseconds) {
 		Individual<Integer> bestIndividual = null;
@@ -39,7 +39,8 @@ public class GeneticNoDestruct extends GeneticAlgorithm<Integer> {
 			if (maxTimeMilliseconds > 0L && (System.currentTimeMillis() - startTime) > maxTimeMilliseconds)
 				break;
 			if (comprobarPoblacionHomogenea(population)) {
-				System.out.println("La población se ha homogenealizado. Se para la ejecución");
+				//Si la población es homogenea, hemos decidido parar la ejecución.
+				System.out.println("La población se ha homogeneizado. Se para la ejecución");
 				bestIndividual = population.get(0);
 				break;
 			}
@@ -76,6 +77,9 @@ public class GeneticNoDestruct extends GeneticAlgorithm<Integer> {
 		return newPopulation;
 	}
 	
+	/*
+	 * Comprueba si todos los individuos de una población son el mismo
+	 */
 	public boolean comprobarPoblacionHomogenea(List<Individual<Integer>> population) {
 		boolean homogeneo = true;
 		Individual<Integer> a = population.get(0);
