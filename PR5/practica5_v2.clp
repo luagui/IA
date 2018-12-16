@@ -1,5 +1,4 @@
 
-
 (deftemplate producto
     (slot nombre)
     (slot tipo (type SYMBOL) (allowed-values F P N) (default N))
@@ -41,33 +40,30 @@
     ?ind <- (producto (nombre ?nombre)  (tipo ?tipoProd) (envuelto N) (volumen ?volProd) (empaquetado N) (idCaja ?id))
     =>
     (modify ?ind (envuelto S))
-	(printout t "hemos1 envuelto el producto " ?nombre crlf ) )
+	(printout t "hemos1 envuelto el producto " ?nombre crlf)
 )
 
-/*esta se debe de ejecutar antes que cajaNueva*/
 (defrule empaquetarCajaExistente
 	(declare (salience 10))
     ?indProd <- (producto (nombre ?nombre)  (tipo ?tipoProd) (envuelto S) (volumen ?volProd) (empaquetado N) (idCaja ?idCajProd))
-    ?indCaja <- (caja (id ?identCaja) (tipo ?tipoCaja) (volumen ?volCaja))
-    (test (eq ?tipoCaja ?tipoProd))
+    ?indCaja <- (caja (id ?identCaja) (tipo ?tipoProd) (volumen ?volCaja))
     (test (>= ?volCaja ?volProd))
     => 
     (modify ?indCaja (volumen (- ?volCaja ?volProd)))
 	(modify ?indProd (empaquetado S) (idCaja ?identCaja))
-    (assert (Producto ?nombre empaquetado)))
-	(printout t "hemos metido " ?nombre " y a la caja le queda  " (- ?volCaja ?volProd)  " volumen" crlf) )
+    (assert (Producto ?nombre empaquetado))
+	(printout t "hemos metido " ?nombre " y a la caja le queda  " (- ?volCaja ?volProd)  " volumen" crlf)
 )
 
 
 (defrule cajaNueva
     (producto (nombre ?nombre)  (tipo ?tipoProd) (envuelto S) (volumen ?volProd) (empaquetado N) (idCaja ?idCajProd))
-    (caja (id ?identCaja) (tipo ?tipoCaja) (volumen ?volCaja))
-    (test (eq ?tipoCaja ?tipoProd))
+    (caja (id ?identCaja) (tipo ?tipoProd) (volumen ?volCaja))
     (test (< ?volCaja ?volProd))
 	?indCont <- (idDeCaja (idC ?cont))
     =>
-    (assert (caja (id ?cont) (tipo ?tipoCaja) (volumen 300)))
+    (assert (caja (id ?cont) (tipo ?tipoProd) (volumen 300)))
 	(modify ?indCont (idC (+ ?cont 1)))
-	(printout t "hemos creado una caja nueva de tipo " ?tipoCaja  crlf)
+	(printout t "hemos creado una caja nueva de tipo " ?tipoProd  crlf)
 )
 
