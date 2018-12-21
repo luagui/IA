@@ -53,6 +53,12 @@
     (slot tieneEspacio 
         (type SYMBOL)
         (allowed-symbols s n))  
+		
+	/*guardamos los gustos en el prototipo*/	
+	(multislot aficiones
+        (type SYMBOL)
+        (allowed-symbols juegos fotografia herramientas deportes compras musica citas)
+    )
 )
 
 (deftemplate app
@@ -89,9 +95,42 @@
         (type FLOAT))    
 )
 
+/*Reorganizamos las características de las apps*/
+/*(deftemplate CaracApp
+    (slot nombre)
+
+    (multislot categoria
+        (type SYMBOL)
+        (allowed-symbols juegos fotografia herramientas deportes compras musica citas social)
+    )
+
+    (slot bienValorada
+        (type SYMBOL))
+
+    (slot contentRating
+        (type SYMBOL)
+        (allowed-symbols everyone everyone10 mature17 teen))
+   
+    (slot grandePeq
+        (type SYMBOL)
+		(allowed-symbols grande peq))
+
+    (slot barataCara
+        (type SYMBOL)
+        (default 0.0))
+    
+    ;--Por comodidad, usaremos float. El valor indica la version minima necesaria
+
+    (slot versionAndroid
+        (type FLOAT))    
+)*/
+
+
+
+
 ;--Clasificamos el tipo de usuario según el contenido de la memoria.
-;-- Joven = menor de 18 años, no ha pagado por ninguna app, gustos como social, jugar, deporte, musica, fotografia. Solo recomenda everyone, everyone10, teen
-;-- Medio = mayor de 18 años, pero menor de 35, no ha pagado por ninguna app, gustos como social, citas, musica, compras.
+;-- Joven = menor de 18 años, no ha pagado por ninguna app. Solo recomenda everyone, everyone10, teen
+;-- Medio = mayor de 18 años, pero menor de 35, no ha pagado por ninguna app
 ;-- Adulto = mayor de 35 años,gustos como herramientas, deportes, compras. Puede haber pagado o no por apps, pero consideramos que su economia es estable y podemos ofrecerle apps de pago
 
 ;-- Habria que crear tal vez algun usuario más por si no se engloba en ninguno de estos grupos
@@ -162,30 +201,40 @@
 (defrule joven
     (usuario (nombre ?nombre) (edad ?edad) (añoMovil ?añoMovil) (sexo ?s) (haPagado n) (espacioDisponible ?espacioDisponible) (aficiones $?afi))
     (test(<= ?edad 17))
-
-    ;-- Comprueba si los gustos del usuario son subconjunto de los gustos del perfil prototípico joven
-    (test (subsetp $?afi (create$ social juegos deportes musica fotografia))) 
     => 
-    (assert(usuarioProtrotipo (nombre ?nombre) (tipo joven) (sexo ?s) (versionAndroid (calcularVersion ?añoMovil)) (tieneEspacio (espacioGrande ?espacioDisponible))))
+    (assert(usuarioProtrotipo (nombre ?nombre) (tipo joven) (sexo ?s) (versionAndroid (calcularVersion ?añoMovil)) (tieneEspacio (espacioGrande ?espacioDisponible)) (aficiones $?afi)))
 )
 
 (defrule medio
     (usuario (nombre ?nombre) (edad ?edad) (añoMovil ?añoMovil) (sexo ?s) (haPagado n) (espacioDisponible ?espacioDisponible) (aficiones $?afi))
     (test(> ?edad 17))
     (test(<= ?edad 35))
-
-    ;-- Comprueba si los gustos del usuario son subconjunto de los gustos del perfil prototípico medio
-    (test (subsetp $?afi (create$ citas musica compras))) 
     => 
-    (assert(usuarioProtrotipo (nombre ?nombre) (tipo medio) (sexo ?s) (versionAndroid (calcularVersion ?añoMovil)) (tieneEspacio (espacioGrande ?espacioDisponible))))
+    (assert(usuarioProtrotipo (nombre ?nombre) (tipo medio) (sexo ?s) (versionAndroid (calcularVersion ?añoMovil)) (tieneEspacio (espacioGrande ?espacioDisponible)) (aficiones $?afi)))
 )
 
 (defrule adulto
     (usuario (nombre ?nombre) (edad ?edad) (añoMovil ?añoMovil) (sexo ?s) (haPagado ?pay) (espacioDisponible ?espacioDisponible) (aficiones $?afi))
     (test(> ?edad 35))
-
-    ;-- Comprueba si los gustos del usuario son subconjunto de los gustos del perfil prototípico joven
-    (test (subsetp $?afi (create$ herramientas deportes compras))) 
     => 
-    (assert(usuarioProtrotipo (nombre ?nombre) (tipo adulto) (sexo ?s) (versionAndroid (calcularVersion ?añoMovil)) (tieneEspacio (espacioGrande ?espacioDisponible))))
+    (assert(usuarioProtrotipo (nombre ?nombre) (tipo adulto) (sexo ?s) (versionAndroid (calcularVersion ?añoMovil)) (tieneEspacio (espacioGrande ?espacioDisponible)) (aficiones $?afi)))
 )
+
+(defrule appLigera
+    (usuarioProtrotipo (nombre ?nombre) (tipo ?tipo) (sexo ?s) (versionAndroid ?añoMovil) (tieneEspacio n) (aficiones $?afi))
+    => 
+    (assert(conviene ?nombre ligera))
+)
+
+(deftemplate conviene
+	(slot nombre)
+	(multislot tipos) ;-- herramientas, deporte,...  depende de gustos y sexo (deportes, belleza,...)
+	(slot ligera) -> si tiene espacio s
+	(slot gratis) -> tipo joven, medio o adulto
+	(slot nueva) -> depende de la versiond de android 
+)
+
+
+
+
+
