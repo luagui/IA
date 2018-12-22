@@ -30,7 +30,7 @@
 
     (multislot aficiones
         (type SYMBOL)
-        (allowed-symbols juegos fotografia herramientas deportes compras musica citas)
+        (allowed-symbols juegos belleza fotografia herramientas deportes compras musica citas)
     )
 )
 
@@ -66,7 +66,7 @@
 
     (multislot categoria
         (type SYMBOL)
-        (allowed-symbols juegos fotografia herramientas deportes compras musica citas social)
+        (allowed-symbols juegos belleza fotografia herramientas deportes compras musica citas social)
     )
 
     (slot nota
@@ -101,7 +101,7 @@
 ;
 ;    (multislot categoria
 ;        (type SYMBOL)
-;       (allowed-symbols juegos fotografia herramientas deportes compras musica citas social)
+;       (allowed-symbols juegos belleza fotografia herramientas deportes compras musica citas social)
 ;   )
 ;
 ;    (slot bienValorada
@@ -143,6 +143,19 @@
 		(default 0.0))
 )
 
+;Contador para mostrar solo los N mejores resultados
+(deftemplate contadorMostrados
+    (slot contador 
+        (type INTEGER)
+        (default 0)
+    )
+)
+
+;se mete el contador como hecho inicializado a 0
+(deffacts contador
+    (contadorMostrados (contador 0))
+)
+
 
 
 ;--Clasificamos el tipo de usuario según el contenido de la memoria.
@@ -167,6 +180,7 @@
     (app (nombre Groupon) (categoria compras) (nota 4.6) (numReviews 1371082) (contentRating teen) (tamano 46) (precio 0.0) (versionAndroid 4.2))
     (app (nombre WeatherRadar) (categoria herramientas) (nota 4.5) (numReviews 25243) (contentRating everyone) (tamano 26) (precio 2.99) (versionAndroid 4.4))
     (app (nombre Facetune) (categoria fotografia social) (nota 4.4) (numReviews 49553) (contentRating everyone) (tamano 48) (precio 5.99) (versionAndroid 4.1))
+	(app (nombre UltraBeauty) (categoria belleza) (nota 4.7) (numReviews 42050) (contentRating everyone) (tamano 48) (precio 0.0) (versionAndroid 4.1))
 
      ;-- apps con poca relevancia
 
@@ -176,9 +190,9 @@
 
 ;-- En principio vamos a trabajar con un usuario solo, para asi no tener que tener asserts puntuacion por cada user
 (deffacts usuarios
-    (usuario (nombre Luis) (edad 15) (añoMovil 2016) (sexo h) (haPagado n) (espacioDisponible 55) (aficiones juegos musica))
-    ;(usuario (nombre Andrea) (edad 24) (añoMovil 2008) (sexo m) (haPagado n) (espacioDisponible 44) (aficiones citas herramientas))
-    ;(usuario (nombre Jose) (edad 55) (añoMovil 2018) (sexo h) (haPagado s) (espacioDisponible 120) (aficiones juegos musica herramientas))
+    ;(usuario (nombre Luis) (edad 15) (añoMovil 2016) (sexo h) (haPagado n) (espacioDisponible 55) (aficiones juegos musica))
+    ;(usuario (nombre Andrea) (edad 24) (añoMovil 2015) (sexo m) (haPagado n) (espacioDisponible 70) (aficiones citas herramientas))
+    (usuario (nombre Jose) (edad 55) (añoMovil 2018) (sexo h) (haPagado s) (espacioDisponible 120) (aficiones juegos musica herramientas))
 )
 
 (deffunction calcularVersion (?year) 
@@ -218,8 +232,10 @@
 
 (deffunction asignaPuntos(?sexo ?espacio ?nota ?numReviews ?tamApp ?catApp1 ?catApp2 $?aficiones )
 
-    ;--Normalizamos el numero de reviews con el numero de reviews de facebook, que es la que más tiene de la store. Esto nos permite ponderar la nota de la app
+    ;--Normalizamos el numero de reviews con el numero de reviews de facebook, que es la que más tiene de la store. 
+	;--Esto nos permite ponderar la nota de la app
     (bind ?puntos (* ?nota (/ ?numReviews 78128208)))
+
 
     (if (eq ?espacio si) then
         (bind ?puntos (+ ?puntos 1.0))
@@ -232,7 +248,7 @@
     )
 
     (if (neq (member$ ?catApp1 $?aficiones) FALSE) then
-        (bind ?puntos (+ ?puntos 1.0))
+        (bind ?puntos (+ ?puntos 3.0))
     else 
         (bind ?puntos (+ ?puntos 0.0))
     )
@@ -241,7 +257,7 @@
 
     (if (neq ?catApp2 (create$ )) then
         (if (neq (member$ catApp2 $?aficiones) FALSE) then
-            (bind ?puntos (+ ?puntos 1.0))
+            (bind ?puntos (+ ?puntos 3.0))
          else 
             (bind ?puntos (+ ?puntos 0.0))
         )
@@ -264,9 +280,39 @@
     )
 
     ;-- Faltaria hacer lo del sexo y deportes, compras, pero me da hasta cosita
+	;-- jajajaja bueno, lo hago yo pero esto que no salga de aqui
+	
+	;-- si es mujer daremos puntos a las aplicaciones de belleza 
+	;-- si es hombre daremos puntos a las aplicaciones de deporte
+	(if (eq ?sexo m) then
+		(if (eq ?catApp1 belleza) then
+			(bind ?puntos (+ ?puntos 0.5))
+		else 
+            (bind ?puntos (+ ?puntos 0.0))
+		)
+    else 
+		(if (eq ?catApp1 deporte) then
+            (bind ?puntos (+ ?puntos 0.5))
+        else 
+            (bind ?puntos (+ ?puntos 0.0))
+        )
+    )
+	
+	(if (eq ?sexo m) then
+		(if (eq ?catApp2 belleza) then
+			(bind ?puntos (+ ?puntos 0.5))
+		else 
+            (bind ?puntos (+ ?puntos 0.0))
+		)
+    else 
+		(if (eq ?catApp2 deporte) then
+            (bind ?puntos (+ ?puntos 0.5))
+        else 
+            (bind ?puntos (+ ?puntos 0.0))
+        )
+    )
+	
 )
-
-
 
 
 
@@ -277,6 +323,8 @@
     (assert(usuarioProtrotipo (nombre ?nombre) (tipo joven) (sexo ?s) (versionAndroid (calcularVersion ?añoMovil)) (tieneEspacio (espacioGrande ?espacioDisponible)) (aficiones $?afi)))
 )
 
+;-----------------------------------------------------------------------------------------------------------------------------------------------
+
 (defrule medio
     (usuario (nombre ?nombre) (edad ?edad) (añoMovil ?añoMovil) (sexo ?s) (haPagado n) (espacioDisponible ?espacioDisponible) (aficiones $?afi))
     (test(> ?edad 17))
@@ -284,16 +332,19 @@
     => 
     (assert(usuarioProtrotipo (nombre ?nombre) (tipo medio) (sexo ?s) (versionAndroid (calcularVersion ?añoMovil)) (tieneEspacio (espacioGrande ?espacioDisponible)) (aficiones $?afi)))
 )
-
+;-----------------------------------------------------------------------------------------------------------------------------------------------
 (defrule adulto
     (usuario (nombre ?nombre) (edad ?edad) (añoMovil ?añoMovil) (sexo ?s) (haPagado ?pay) (espacioDisponible ?espacioDisponible) (aficiones $?afi))
     (test(> ?edad 35))
     => 
     (assert(usuarioProtrotipo (nombre ?nombre) (tipo adulto) (sexo ?s) (versionAndroid (calcularVersion ?añoMovil)) (tieneEspacio (espacioGrande ?espacioDisponible)) (aficiones $?afi)))
 )
-
+;-----------------------------------------------------------------------------------------------------------------------------------------------
 
 ;--Una vez clasificados los usuarios en usuarios prototipos vamos a valorar cada app
+
+;-++++++++++++++++++++++++++++++++++++++++++++++++++++USERJOVEN++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 (defrule userJoven
     (usuarioProtrotipo (nombre ?nombre) (tipo joven) (sexo ?s) (versionAndroid ?v) (tieneEspacio ?e) (aficiones $?afi))
@@ -302,11 +353,37 @@
     (assert(puntuacion (nombreApp ?nombreApp) (puntos (asignaPuntos ?s ?e ?nApp ?rApp ?tam (first$ $?catApp) (rest$ $?catApp) $?afi)))) ;--El rest de una lista de un elemento devuelve lista vacia, creo--
 )
 
+;-+++++++++++++++++++++++++++++++++++++++++++++++++++++USERMEDIO+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+(defrule userMedio
+    (usuarioProtrotipo (nombre ?nombre) (tipo medio) (sexo ?s) (versionAndroid ?v) (tieneEspacio ?e) (aficiones $?afi))
+    (app (nombre ?nombreApp) (categoria $?catApp) (nota ?nApp) (numReviews ?rApp) (contentRating ?c&:(member$ ?c (create$ everyone everyone10 mature17 teen))) (tamano ?tam) (precio 0.0) (versionAndroid ?vApp&:(<= ?vApp ?v)))
+    =>
+    (assert(puntuacion (nombreApp ?nombreApp) (puntos (asignaPuntos ?s ?e ?nApp ?rApp ?tam (first$ $?catApp) (rest$ $?catApp) $?afi)))) ;--El rest de una lista de un elemento devuelve lista vacia, creo--
+)
+
+
+;-+++++++++++++++++++++++++++++++++++++++++++++++++++++USERADULTO+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+(defrule userAdulto
+    (usuarioProtrotipo (nombre ?nombre) (tipo adulto) (sexo ?s) (versionAndroid ?v) (tieneEspacio ?e) (aficiones $?afi))
+    (app (nombre ?nombreApp) (categoria $?catApp) (nota ?nApp) (numReviews ?rApp) (contentRating ?c&:(member$ ?c (create$ everyone everyone10 mature17 teen))) (tamano ?tam) (precio ?preci) (versionAndroid ?vApp&:(<= ?vApp ?v)))
+    =>
+    (assert(puntuacion (nombreApp ?nombreApp) (puntos (asignaPuntos ?s ?e ?nApp ?rApp ?tam (first$ $?catApp) (rest$ $?catApp) $?afi)))) ;--El rest de una lista de un elemento devuelve lista vacia, creo--
+)
+
+;-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
 (defrule ordenaMuestra
   ?r1 <- (puntuacion (nombreApp ?nombreApp1) (puntos ?p1))
   (not (puntuacion (nombreApp ?nombreApp2) (puntos ?p2&:(< ?p1 ?p2))))
   (app (nombre ?nombreApp1) (categoria $?catApp) (nota ?nApp) (numReviews ?rApp) (contentRating ?c) (tamano ?tam) (precio ?p) (versionAndroid ?vApp))
+  ?varCont <- (contadorMostrados (contador ?cont))
+  (test (< ?cont 5))
   =>
+  
+  (modify ?varCont (contador (+ ?cont 1)))
   (printout t crlf)
   (printout t "La app recomendado es : " ?nombreApp1 ". Cuya puntuacion es: "  ?p1 crlf)
   (printout t "Es una app " (first$ $?catApp) " y su precio es de " ?p " euros." crlf)
