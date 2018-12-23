@@ -39,7 +39,7 @@
 
     (slot tipo
         (type SYMBOL)
-        (allowed-symbols joven adulto medio))
+        (allowed-symbols joven jovenYPaga adulto medio))
     
     (slot sexo
         (type SYMBOL)
@@ -279,8 +279,7 @@
          (bind ?puntos (+ ?puntos 0.0))
     )
 
-    ;-- Faltaria hacer lo del sexo y deportes, compras, pero me da hasta cosita
-	;-- jajajaja bueno, lo hago yo pero esto que no salga de aqui
+  
 	
 	;-- si es mujer daremos puntos a las aplicaciones de belleza 
 	;-- si es hombre daremos puntos a las aplicaciones de deporte
@@ -325,6 +324,15 @@
 
 ;-----------------------------------------------------------------------------------------------------------------------------------------------
 
+(defrule jovenYPaga
+    (usuario (nombre ?nombre) (edad ?edad) (añoMovil ?añoMovil) (sexo ?s) (haPagado s) (espacioDisponible ?espacioDisponible) (aficiones $?afi))
+    (test(<= ?edad 17))
+    => 
+    (assert(usuarioProtrotipo (nombre ?nombre) (tipo jovenYPaga) (sexo ?s) (versionAndroid (calcularVersion ?añoMovil)) (tieneEspacio (espacioGrande ?espacioDisponible)) (aficiones $?afi)))
+)
+
+;-----------------------------------------------------------------------------------------------------------------------------------------------
+
 (defrule medio
     (usuario (nombre ?nombre) (edad ?edad) (añoMovil ?añoMovil) (sexo ?s) (haPagado n) (espacioDisponible ?espacioDisponible) (aficiones $?afi))
     (test(> ?edad 17))
@@ -349,6 +357,15 @@
 (defrule userJoven
     (usuarioProtrotipo (nombre ?nombre) (tipo joven) (sexo ?s) (versionAndroid ?v) (tieneEspacio ?e) (aficiones $?afi))
     (app (nombre ?nombreApp) (categoria $?catApp) (nota ?nApp) (numReviews ?rApp) (contentRating ?c&:(member$ ?c (create$ everyone everyone10 teen))) (tamano ?tam) (precio 0.0) (versionAndroid ?vApp&:(<= ?vApp ?v)))
+    =>
+    (assert(puntuacion (nombreApp ?nombreApp) (puntos (asignaPuntos ?s ?e ?nApp ?rApp ?tam (first$ $?catApp) (rest$ $?catApp) $?afi)))) ;--El rest de una lista de un elemento devuelve lista vacia, creo--
+)
+
+;-+++++++++++++++++++++++++++++++++++++++++++++++++++++USERJOVENQUEPAGA+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+(defrule userJovenQuePaga
+    (usuarioProtrotipo (nombre ?nombre) (tipo jovenYPaga) (sexo ?s) (versionAndroid ?v) (tieneEspacio ?e) (aficiones $?afi))
+    (app (nombre ?nombreApp) (categoria $?catApp) (nota ?nApp) (numReviews ?rApp) (contentRating ?c&:(member$ ?c (create$ everyone everyone10 teen))) (tamano ?tam) (precio ?preci) (versionAndroid ?vApp&:(<= ?vApp ?v)))
     =>
     (assert(puntuacion (nombreApp ?nombreApp) (puntos (asignaPuntos ?s ?e ?nApp ?rApp ?tam (first$ $?catApp) (rest$ $?catApp) $?afi)))) ;--El rest de una lista de un elemento devuelve lista vacia, creo--
 )
@@ -391,11 +408,7 @@
   (retract ?r1))
 
 
-;(defrule appLigera
-;    (usuarioProtrotipo (nombre ?nombre) (tipo ?tipo) (sexo ?s) (versionAndroid ?añoMovil) (tieneEspacio n) (aficiones $?afi))
-;    => 
-;    (assert(conviene ?nombre ligera) 
-;)
+
 
 
 

@@ -36,25 +36,12 @@
 
 
 (defrule envolProd
-	(declare (salience 15))
+	;(declare (salience 15))
     ?ind <- (producto (nombre ?nombre)  (tipo ?tipoProd) (envuelto N) (volumen ?volProd) (empaquetado N) (idCaja ?id))
     =>
     (modify ?ind (envuelto S))
-	(printout t "hemos1 envuelto el producto " ?nombre crlf)
+	(printout t "hemos envuelto el producto " ?nombre crlf)
 )
-
-(defrule empaquetarCajaExistente
-	(declare (salience 10))
-    ?indProd <- (producto (nombre ?nombre)  (tipo ?tipoProd) (envuelto S) (volumen ?volProd) (empaquetado N) (idCaja ?idCajProd))
-    ?indCaja <- (caja (id ?identCaja) (tipo ?tipoProd) (volumen ?volCaja))
-    (test (>= ?volCaja ?volProd))
-    => 
-    (modify ?indCaja (volumen (- ?volCaja ?volProd)))
-	(modify ?indProd (empaquetado S) (idCaja ?identCaja))
-    (assert (Producto ?nombre empaquetado))
-	(printout t "hemos metido " ?nombre " y a la caja le queda  " (- ?volCaja ?volProd)  " volumen" crlf)
-)
-
 
 (defrule cajaNueva
     (producto (nombre ?nombre)  (tipo ?tipoProd) (envuelto S) (volumen ?volProd) (empaquetado N) (idCaja ?idCajProd))
@@ -64,6 +51,21 @@
     =>
     (assert (caja (id ?cont) (tipo ?tipoProd) (volumen 300)))
 	(modify ?indCont (idC (+ ?cont 1)))
-	(printout t "hemos creado una caja nueva de tipo " ?tipoProd  crlf)
+	(printout t "hemos creado una caja nueva de tipo " ?tipoProd " con identificador " ?cont crlf)
 )
+
+
+(defrule empaquetarCajaExistente
+	;(declare (salience 10))
+    ?indProd <- (producto (nombre ?nombre)  (tipo ?tipoProd) (envuelto S) (volumen ?volProd) (empaquetado N) (idCaja ?idCajProd))
+    ?indCaja <- (caja (id ?identCaja) (tipo ?tipoProd) (volumen ?volCaja))
+    (test (>= ?volCaja ?volProd))
+    => 
+    (modify ?indCaja (volumen (- ?volCaja ?volProd)))
+	(modify ?indProd (empaquetado S) (idCaja ?identCaja))
+    (assert (Producto ?nombre empaquetado))
+	(printout t "hemos metido " ?nombre " y a la caja " ?identCaja " le queda  " (- ?volCaja ?volProd)  " volumen" crlf)
+)
+
+
 
