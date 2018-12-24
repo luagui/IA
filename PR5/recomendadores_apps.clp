@@ -190,9 +190,9 @@
 
 ;-- En principio vamos a trabajar con un usuario solo, para asi no tener que tener asserts puntuacion por cada user
 (deffacts usuarios
-    ;(usuario (nombre Luis) (edad 15) (añoMovil 2016) (sexo h) (haPagado n) (espacioDisponible 55) (aficiones juegos musica))
-    ;(usuario (nombre Andrea) (edad 24) (añoMovil 2015) (sexo m) (haPagado n) (espacioDisponible 70) (aficiones citas herramientas))
-    (usuario (nombre Jose) (edad 55) (añoMovil 2018) (sexo h) (haPagado s) (espacioDisponible 120) (aficiones juegos musica herramientas))
+    ;(usuario (nombre Luis) (edad 15) (añoMovil 2016) (sexo h) (haPagado s) (espacioDisponible 55) (aficiones fotografia deportes musica))
+    (usuario (nombre Andrea) (edad 24) (añoMovil 2015) (sexo m) (haPagado n) (espacioDisponible 70) (aficiones citas compras herramientas))
+    ;(usuario (nombre Jose) (edad 55) (añoMovil 2018) (sexo h) (haPagado s) (espacioDisponible 120) (aficiones juegos musica herramientas))
 )
 
 (deffunction calcularVersion (?year) 
@@ -397,7 +397,7 @@
   (not (puntuacion (nombreApp ?nombreApp2) (puntos ?p2&:(< ?p1 ?p2))))
   (app (nombre ?nombreApp1) (categoria $?catApp) (nota ?nApp) (numReviews ?rApp) (contentRating ?c) (tamano ?tam) (precio ?p) (versionAndroid ?vApp))
   ?varCont <- (contadorMostrados (contador ?cont))
-  (test (< ?cont 5))
+  (test (< ?cont 100))
   =>
   
   (modify ?varCont (contador (+ ?cont 1)))
